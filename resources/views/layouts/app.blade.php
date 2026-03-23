@@ -26,7 +26,7 @@ body {
 
 <body class="bg-slate-50 text-slate-800">
 
-<div class="flex h-screen overflow-hidden">
+<div class="flex min-h-screen">
 
 <!-- SIDEBAR -->
 <aside class="w-64 bg-slate-900 text-white hidden md:flex flex-col shadow-xl">
@@ -156,7 +156,7 @@ A
 </header>
 
 <!-- MAIN -->
-<main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50 p-6">
+<main class="flex-1 bg-slate-50 p-6">
 
 @yield('content')
 

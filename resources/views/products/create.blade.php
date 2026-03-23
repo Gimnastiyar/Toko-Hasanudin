@@ -2,226 +2,180 @@
 
 @section('content')
 
-<div class="max-w-4xl mx-auto">
+<div class="max-w-5xl mx-auto">
 
-<!-- HEADER -->
-<div class="mb-6 flex items-center">
+    <!-- HEADER -->
+    <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('products.index') }}"
+               class="p-2 rounded-lg bg-slate-100 hover:bg-indigo-100 transition">
+                ←
+            </a>
 
-<a href="{{ route('products.index') }}"
-class="text-slate-500 hover:text-indigo-600 mr-4 transition">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-800">Tambah Produk</h1>
+                <p class="text-sm text-slate-500">Tambahkan produk baru ke sistem</p>
+            </div>
+        </div>
+    </div>
 
-<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-</svg>
+    <!-- CARD -->
+    <div class="bg-white p-10 rounded-2xl shadow-lg border border-slate-100">
 
-</a>
+        <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-<h1 class="text-2xl font-bold text-slate-800">
-Tambah Produk Baru
-</h1>
+            <!-- ERROR -->
+            @if ($errors->any())
+            <div class="mb-6 bg-red-50 border border-red-200 text-red-600 p-4 rounded-lg">
+                <ul class="text-sm space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>• {{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
-</div>
+            <!-- BARCODE (HIGHLIGHT SECTION) -->
+            <div class="mb-8 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-100 p-6 rounded-xl">
+                <label class="text-sm font-semibold text-indigo-700 block mb-2">
+                    Scan / Input Barcode
+                </label>
 
+                <input type="text"
+                       name="barcode"
+                       value="{{ old('barcode') }}"
+                       class="w-full px-5 py-3 rounded-xl border-2 border-indigo-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-lg tracking-wide"
+                       placeholder="Scan barcode di sini..."
+                       required>
 
-<!-- CARD -->
-<div class="bg-white rounded-xl shadow border border-slate-200 p-8">
+                <p class="text-xs text-indigo-400 mt-2">
+                    Scanner otomatis akan mengisi dan submit (jika pakai barcode scanner)
+                </p>
+            </div>
 
-<form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+            <!-- GRID -->
+            <div class="grid md:grid-cols-2 gap-6">
 
-@csrf
+                <!-- NAMA -->
+                <div class="col-span-2">
+                    <label class="text-xs text-slate-500">Nama Produk</label>
+                    <input type="text"
+                           name="name"
+                           value="{{ old('name') }}"
+                           class="w-full mt-1 px-4 py-3 rounded-xl border focus:ring-2 focus:ring-indigo-500"
+                           placeholder="Contoh: Indomie Goreng">
+                </div>
 
+                <!-- KATEGORI -->
+                <div>
+                    <label class="text-xs text-slate-500">Kategori</label>
+                    <select name="category"
+                        class="w-full mt-1 px-4 py-3 rounded-xl border focus:ring-2 focus:ring-indigo-500">
 
-<!-- ERROR VALIDATION -->
+                        <option>Makanan</option>
+                        <option>Minuman</option>
+                        <option>Kerajinan</option>
+                        <option>Pakaian</option>
+                        <option>Elektronik</option>
+                        <option>Lainnya</option>
 
-@if ($errors->any())
+                    </select>
+                </div>
 
-<div class="mb-6 bg-red-100 border border-red-300 text-red-700 p-3 rounded">
+                <!-- HARGA -->
+                <div>
+                    <label class="text-xs text-slate-500">Harga</label>
+                    <input type="number"
+                           name="price"
+                           value="{{ old('price') }}"
+                           class="w-full mt-1 px-4 py-3 rounded-xl border focus:ring-2 focus:ring-indigo-500"
+                           placeholder="Rp 0">
+                </div>
 
-<ul class="list-disc pl-4 text-sm">
-@foreach ($errors->all() as $error)
-<li>{{ $error }}</li>
-@endforeach
-</ul>
+                <!-- STOK -->
+                <div>
+                    <label class="text-xs text-slate-500">Stok</label>
+                    <input type="number"
+                           name="stock"
+                           value="{{ old('stock') }}"
+                           class="w-full mt-1 px-4 py-3 rounded-xl border focus:ring-2 focus:ring-indigo-500"
+                           placeholder="0">
+                </div>
 
-</div>
+                <!-- UPLOAD -->
+                <div class="col-span-2">
+                    <label class="text-xs text-slate-500">Upload Gambar</label>
 
-@endif
+                    <div class="flex items-center gap-6 mt-2">
 
+                        <input type="file"
+                               name="image"
+                               id="imageInput"
+                               class="block w-full text-sm text-slate-500
+                               file:mr-4 file:py-2 file:px-4 file:rounded-lg
+                               file:border-0 file:font-semibold
+                               file:bg-indigo-50 file:text-indigo-700
+                               hover:file:bg-indigo-100">
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- PREVIEW BOX -->
+                        <div class="w-28 h-28 rounded-xl border bg-slate-50 flex items-center justify-center overflow-hidden">
+                            <img id="previewImage" class="hidden w-full h-full object-cover"/>
+                            <span class="text-xs text-slate-400">Preview</span>
+                        </div>
 
-<!-- NAMA PRODUK -->
+                    </div>
+                </div>
 
-<div class="col-span-2">
+                <!-- DESKRIPSI -->
+                <div class="col-span-2">
+                    <label class="text-xs text-slate-500">Deskripsi</label>
+                    <textarea name="description"
+                              rows="4"
+                              class="w-full mt-1 px-4 py-3 rounded-xl border focus:ring-2 focus:ring-indigo-500"
+                              placeholder="Deskripsi produk...">{{ old('description') }}</textarea>
+                </div>
 
-<label class="text-sm font-medium text-slate-700 mb-1 block">
-Nama Produk
-</label>
+            </div>
 
-<input type="text"
-name="name"
-value="{{ old('name') }}"
-class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-placeholder="Contoh: Kripik Pisang Coklat"
-required>
+            <!-- BUTTON -->
+            <div class="flex justify-between items-center mt-10 pt-6 border-t">
 
-</div>
+                <a href="{{ route('products.index') }}"
+                   class="text-slate-500 hover:text-slate-700">
+                    ← Kembali
+                </a>
 
+                <button type="submit"
+                        class="bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-8 py-3 rounded-xl shadow-md hover:scale-105 transition">
+                    🚀 Simpan Produk
+                </button>
 
-<!-- KATEGORI -->
+            </div>
 
-<div>
+        </form>
 
-<label class="text-sm font-medium text-slate-700 mb-1 block">
-Kategori
-</label>
-
-<select name="category"
-class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500">
-
-<option value="Makanan">Makanan</option>
-<option value="Minuman">Minuman</option>
-<option value="Kerajinan">Kerajinan</option>
-<option value="Pakaian">Pakaian</option>
-<option value="Elektronik">Elektronik</option>
-<option value="Lainnya">Lainnya</option>
-
-</select>
-
-</div>
-
-
-<!-- HARGA -->
-
-<div>
-
-<label class="text-sm font-medium text-slate-700 mb-1 block">
-Harga (Rp)
-</label>
-
-<input type="number"
-name="price"
-value="{{ old('price') }}"
-class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
-placeholder="0"
-required>
-
-</div>
-
-
-<!-- STOK -->
-
-<div>
-
-<label class="text-sm font-medium text-slate-700 mb-1 block">
-Stok Awal
-</label>
-
-<input type="number"
-name="stock"
-value="{{ old('stock') }}"
-class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
-placeholder="0"
-required>
-
-</div>
-
-
-<!-- FOTO -->
-
-<div>
-
-<label class="text-sm font-medium text-slate-700 mb-1 block">
-Foto Produk
-</label>
-
-<input type="file"
-name="image"
-id="imageInput"
-class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
-
-</div>
-
-
-<!-- PREVIEW IMAGE -->
-
-<div class="flex items-center justify-center">
-
-<img id="previewImage"
-class="h-24 rounded-lg border hidden"/>
-
-</div>
-
-
-<!-- DESKRIPSI -->
-
-<div class="col-span-2">
-
-<label class="text-sm font-medium text-slate-700 mb-1 block">
-Deskripsi (Opsional)
-</label>
-
-<textarea name="description"
-rows="3"
-class="w-full border border-slate-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-indigo-500"
-placeholder="Deskripsi produk...">{{ old('description') }}</textarea>
+    </div>
 
 </div>
 
-
-</div>
-
-
-<!-- BUTTON -->
-
-<div class="flex justify-end mt-8 border-t pt-6">
-
-<button type="submit"
-class="bg-indigo-600 text-white px-6 py-2.5 rounded-lg hover:bg-indigo-700 transition font-semibold shadow">
-
-Simpan Produk
-
-</button>
-
-</div>
-
-
-</form>
-
-</div>
-
-</div>
-
-
-<!-- PREVIEW IMAGE SCRIPT -->
-
+<!-- SCRIPT PREVIEW -->
 <script>
-
 document.getElementById('imageInput').addEventListener('change', function(event){
+    const file = event.target.files[0];
 
-const file = event.target.files[0];
+    if(file){
+        const reader = new FileReader();
 
-if(file){
+        reader.onload = function(e){
+            const img = document.getElementById('previewImage');
+            img.src = e.target.result;
+            img.classList.remove('hidden');
+        }
 
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-const img = document.getElementById('previewImage');
-
-img.src = e.target.result;
-
-img.classList.remove('hidden');
-
-}
-
-reader.readAsDataURL(file);
-
-}
-
+        reader.readAsDataURL(file);
+    }
 });
-
 </script>
 
 @endsection

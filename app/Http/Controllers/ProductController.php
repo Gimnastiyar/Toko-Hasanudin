@@ -54,6 +54,7 @@ class ProductController extends Controller
 
         // Validasi input form
         $request->validate([
+            'barcode' => 'required|unique:products,barcode',
             'name' => 'required|min:3',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
@@ -76,6 +77,7 @@ class ProductController extends Controller
 
         // Simpan data produk ke database
         Product::create([
+            'barcode' => $request->barcode,
             'name' => $request->name,
             'category' => $request->category,
             'price' => $request->price,
