@@ -1,294 +1,228 @@
 @extends('layouts.app')
-
 @section('content')
 
-{{-- ======================================================
-   CONTAINER HALAMAN TRANSAKSI
-====================================================== --}}
-<div class="max-w-3xl mx-auto">
+<div class="max-w-5xl mx-auto mt-6">
 
+    <!-- TITLE -->
+    <h1 class="text-xl font-semibold mb-4">Tambah Transaksi</h1>
 
-{{-- ======================================================
-   HEADER HALAMAN
-====================================================== --}}
-<div class="mb-6 flex items-center">
+    <form action="{{ route('transactions.store') }}" method="POST">
+        @csrf
 
-    {{-- Tombol kembali --}}
-    <a href="{{ route('dashboard') }}"
-       class="text-slate-500 hover:text-indigo-600 mr-4 transition">
+        <input type="hidden" name="product_id" id="product_id">
 
-        <svg class="w-6 h-6" fill="none" stroke="currentColor"
-             viewBox="0 0 24 24">
+        <div class="bg-white rounded-xl shadow p-6">
 
-            <path stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18">
-            </path>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-        </svg>
+                <!-- LEFT -->
+                <div class="lg:col-span-2">
 
-    </a>
+                    <label class="text-xs text-gray-500 font-semibold">
+                        INPUT DATA BARANG
+                    </label>
 
-    <h1 class="text-2xl font-bold text-slate-800">
-        Kasir / Transaksi Baru
-    </h1>
+                    <!-- INPUT -->
+                    <div class="flex mt-2">
+                        <input type="text" id="barcode"
+                            class="w-full border rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                            placeholder="Scan barcode..." autofocus>
 
-</div>
+                        <button type="button" onclick="checkBarcode()"
+                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 rounded-r-lg">
+                            Cari
+                        </button>
+                    </div>
 
+                    <p id="status" class="text-xs text-gray-400 mt-1">
+                        Menunggu input...
+                    </p>
 
+                    <!-- PRODUCT CARD -->
+                    <div id="productBox"
+                        class="mt-6 border rounded-xl p-6 text-center opacity-50 transition duration-300">
 
-{{-- ======================================================
-   NOTIFIKASI ERROR
-====================================================== --}}
-@if(session('error'))
+                        <div class="text-gray-400 text-3xl mb-2">📦</div>
 
-<div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-    {{ session('error') }}
-</div>
+                        <h2 id="name" class="font-semibold text-lg">-</h2>
 
-@endif
+                        <div class="flex justify-center gap-6 mt-3 text-sm">
 
+                            <div>
+                                <p class="text-gray-400">Harga</p>
+                                <p id="price">0</p>
+                            </div>
 
+                            <div>
+                                <p class="text-gray-400">Stok</p>
+                                <p id="stock">0</p>
+                            </div>
 
-{{-- ======================================================
-   FORM TRANSAKSI
-====================================================== --}}
-<div class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
+                        </div>
 
-<div class="p-6 sm:p-8">
+                    </div>
 
-<form action="{{ route('transactions.store') }}" method="POST">
+                </div>
 
-@csrf
+                <!-- RIGHT -->
+                <div>
 
+                    <label class="text-xs text-gray-500 font-semibold">
+                        RINCIAN PEMBAYARAN
+                    </label>
 
-<div class="space-y-6">
+                    <!-- QTY -->
+                    <div class="bg-gray-50 rounded-xl p-4 mt-2 text-center">
 
-{{-- ============================================
-   PILIH PRODUK
-============================================ --}}
-<div>
+                        <p class="text-sm text-gray-500">Jumlah Barang</p>
 
-<label class="block text-sm font-medium text-slate-700 mb-2">
-Pilih Produk
-</label>
+                        <div class="flex justify-center items-center gap-4 mt-2">
 
-<select id="product_id"
-        name="product_id"
-        class="w-full rounded-lg border-slate-200 border px-4 py-3
-               focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-               transition text-slate-700"
-        required
-        onchange="updatePrice()">
+                            <button type="button" onclick="changeQty(-1)"
+                                class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+                                -
+                            </button>
 
-<option value="" data-price="0" data-stock="0">
--- Pilih Produk --
-</option>
+                            <input id="qty" name="quantity" type="number" value="1"
+                                class="w-16 text-center border rounded"
+                                disabled>
 
-@foreach($products as $product)
+                            <button type="button" onclick="changeQty(1)"
+                                class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">
+                                +
+                            </button>
 
-<option value="{{ $product->id }}"
-        data-price="{{ $product->price }}"
-        data-stock="{{ $product->stock }}">
+                        </div>
 
-{{ $product->name }} (Stok: {{ $product->stock }})
+                    </div>
 
-</option>
+                    <!-- TOTAL -->
+                    <div
+                        class="bg-indigo-600 text-white text-center rounded-xl p-6 mt-4 shadow-lg">
 
-@endforeach
+                        <p class="text-indigo-200 text-sm">TOTAL TAGIHAN</p>
 
-</select>
+                        <h1 id="total" class="text-4xl font-extrabold text-white">
+                            Rp 0
+                        </h1>
 
-</div>
+                    </div>
 
+                    <!-- BUTTON -->
+                    <button type="submit" id="btn"
+                        class="w-full bg-green-500 text-white py-3 rounded-xl mt-4 transition duration-200 opacity-50 cursor-not-allowed"
+                        disabled>
 
+                        PROSES PEMBAYARAN
 
-{{-- ============================================
-   INFORMASI HARGA DAN JUMLAH
-============================================ --}}
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6
-            p-4 bg-slate-50 rounded-lg border border-slate-200">
+                    </button>
 
-{{-- Harga satuan --}}
-<div>
+                    <p class="text-xs text-gray-400 text-center mt-2">
+                        Pastikan data sudah benar sebelum memproses
+                    </p>
 
-<p class="text-sm text-slate-500 mb-1">
-Harga Satuan
-</p>
+                </div>
 
-<p class="text-lg font-semibold text-slate-800" id="price_display">
-Rp 0
-</p>
+            </div>
 
-</div>
+        </div>
 
-
-
-{{-- Jumlah beli --}}
-<div>
-
-<label class="block text-sm font-medium text-slate-700 mb-2">
-Jumlah Beli
-</label>
-
-<input type="number"
-       id="quantity"
-       name="quantity"
-       min="1"
-       value="1"
-       class="w-full rounded-lg border-slate-200 border px-4 py-2
-              focus:ring-2 focus:ring-indigo-500 transition"
-       required
-       oninput="updateTotal()">
-
-<p class="text-xs text-red-500 mt-1 hidden" id="stock_warning">
-Stok tidak cukup!
-</p>
+    </form>
 
 </div>
 
-</div>
-
-
-
-{{-- ============================================
-   TOTAL PEMBAYARAN
-============================================ --}}
-<div class="text-right border-t border-slate-100 pt-6">
-
-<p class="text-slate-500 mb-1">
-Total Yang Harus Dibayar
-</p>
-
-<h2 class="text-4xl font-bold text-indigo-600" id="total_display">
-Rp 0
-</h2>
-
-</div>
-
-</div>
-
-
-
-{{-- ============================================
-   TOMBOL PROSES PEMBAYARAN
-============================================ --}}
-<div class="flex justify-end mt-8">
-
-<button type="submit"
-        class="w-full md:w-auto bg-indigo-600 text-white px-8 py-3
-               rounded-lg hover:bg-indigo-700 shadow-lg hover:shadow-xl
-               transition font-medium flex justify-center items-center">
-
-<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor"
-     viewBox="0 0 24 24">
-
-<path stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="2"
-      d="M17 9V7a2 2 0 00-2-2H5
-         a2 2 0 00-2 2v6
-         a2 2 0 002 2h2
-         m2 4h10a2 2 0 002-2v-6
-         a2 2 0 00-2-2H9
-         a2 2 0 00-2 2v6
-         a2 2 0 002 2zm7-5
-         a2 2 0 11-4 0
-         2 2 0 014 0z">
-</path>
-
-</svg>
-
-Proses Pembayaran
-
-</button>
-
-</div>
-
-</form>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-{{-- ======================================================
-   SCRIPT PERHITUNGAN TRANSAKSI
-====================================================== --}}
 <script>
+let currentPrice = 0;
 
-/*
-|--------------------------------------------------------------------------
-| Fungsi updatePrice()
-|--------------------------------------------------------------------------
-| Mengambil harga produk dari option yang dipilih
-| lalu menampilkan harga satuan
-*/
+// ENTER = AUTO SEARCH
+document.getElementById('barcode').addEventListener('keypress', function(e){
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        checkBarcode();
+    }
+});
 
-function updatePrice() {
+async function checkBarcode() {
 
-const select = document.getElementById('product_id');
+    let code = document.getElementById('barcode').value;
+    let status = document.getElementById('status');
 
-const price = select.options[select.selectedIndex].getAttribute('data-price');
+    if (!code) return;
 
-document.getElementById('price_display').innerText =
-'Rp ' + new Intl.NumberFormat('id-ID').format(price);
+    status.innerText = "Mencari...";
 
-updateTotal();
+    try {
 
+        let res = await fetch(`/api/products/search?code=${code}`);
+        let data = await res.json();
+
+        if (data.status === 'success') {
+
+            let p = data.data;
+
+            document.getElementById('product_id').value = p.id;
+            document.getElementById('name').innerText = p.name;
+            document.getElementById('price').innerText =
+                new Intl.NumberFormat('id-ID').format(p.price);
+            document.getElementById('stock').innerText = p.stock;
+
+            currentPrice = p.price;
+
+            // AKTIFKAN UI
+            document.getElementById('productBox').classList.remove('opacity-50');
+            document.getElementById('qty').disabled = false;
+
+            let btn = document.getElementById('btn');
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            btn.classList.add('hover:bg-green-600');
+
+            status.innerText = "Produk ditemukan ✓";
+
+            calculate();
+
+        } else {
+            alert('Produk tidak ditemukan');
+            resetForm();
+        }
+
+    } catch (e) {
+        alert('Error sistem');
+    }
 }
 
+// QTY
+function changeQty(val) {
+    let input = document.getElementById('qty');
+    let newVal = parseInt(input.value) + val;
 
+    if (newVal < 1) newVal = 1;
 
-/*
-|--------------------------------------------------------------------------
-| Fungsi updateTotal()
-|--------------------------------------------------------------------------
-| Menghitung total harga berdasarkan
-| harga produk dan jumlah pembelian
-*/
-
-function updateTotal() {
-
-const select = document.getElementById('product_id');
-
-const price = select.options[select.selectedIndex].getAttribute('data-price') || 0;
-
-const stock = parseInt(select.options[select.selectedIndex].getAttribute('data-stock')) || 0;
-
-const qty = document.getElementById('quantity').value || 0;
-
-
-
-// Validasi stok
-const warning = document.getElementById('stock_warning');
-
-if(qty > stock){
-
-warning.classList.remove('hidden');
-
-warning.innerText = 'Melebihi sisa stok (' + stock + ')';
-
-}else{
-
-warning.classList.add('hidden');
-
+    input.value = newVal;
+    calculate();
 }
 
+// TOTAL
+function calculate() {
+    let qty = document.getElementById('qty').value;
+    let total = qty * currentPrice;
 
-
-// Hitung total harga
-const total = price * qty;
-
-document.getElementById('total_display').innerText =
-'Rp ' + new Intl.NumberFormat('id-ID').format(total);
-
+    document.getElementById('total').innerText =
+        'Rp ' + new Intl.NumberFormat('id-ID').format(total);
 }
 
+// RESET
+function resetForm(){
+    document.getElementById('name').innerText = '-';
+    document.getElementById('price').innerText = '0';
+    document.getElementById('stock').innerText = '0';
+    document.getElementById('total').innerText = 'Rp 0';
+
+    document.getElementById('qty').disabled = true;
+    document.getElementById('btn').disabled = true;
+
+    document.getElementById('btn').classList.add('opacity-50', 'cursor-not-allowed');
+}
 </script>
 
 @endsection

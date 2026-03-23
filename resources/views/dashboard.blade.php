@@ -2,174 +2,177 @@
 
 @section('content')
 
-<!-- ===============================
-HEADER DASHBOARD
-=============================== -->
+<div class="max-w-7xl mx-auto">
 
-<div class="flex justify-between items-center mb-6">
+    <!-- HEADER -->
+    <div class="flex justify-between items-center mb-8">
 
-    <div>
-        <h1 class="text-2xl font-bold text-slate-800">
-            Dashboard
-        </h1>
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">
+                Dashboard
+            </h1>
 
-        <p class="text-sm text-slate-500">
-            Ringkasan aktivitas Toko Hasan
-        </p>
-    </div>
+            <p class="text-sm text-slate-500">
+                Selamat datang 👋 | {{ date('d M Y') }}
+            </p>
+        </div>
 
-</div>
+        <!-- QUICK ACTION -->
+        <div class="flex gap-3">
+            <a href="{{ route('transactions.create') }}"
+               class="bg-indigo-600 text-white px-4 py-2 rounded-lg shadow hover:scale-105 transition">
+                ➕ Transaksi
+            </a>
 
-
-<!-- ===============================
-STATISTIC CARDS
-=============================== -->
-
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-
-    <!-- TOTAL PENDAPATAN -->
-    <div class="bg-gradient-to-r from-emerald-500 to-emerald-700 
-                text-white rounded-xl p-6 shadow-lg 
-                hover:scale-105 transition duration-300">
-
-        <p class="text-sm opacity-80">Total Pendapatan</p>
-
-        <p class="text-3xl font-bold mt-2">
-            Rp {{ number_format($totalRevenue, 0, ',', '.') }}
-        </p>
+            <a href="{{ route('products.create') }}"
+               class="bg-emerald-500 text-white px-4 py-2 rounded-lg shadow hover:scale-105 transition">
+                📦 Produk
+            </a>
+        </div>
 
     </div>
 
 
-    <!-- TOTAL PRODUK -->
-    <div class="bg-gradient-to-r from-blue-500 to-blue-700 
-                text-white rounded-xl p-6 shadow-lg 
-                hover:scale-105 transition duration-300">
+    <!-- STATISTIC -->
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
 
-        <p class="text-sm opacity-80">Total Produk</p>
+        <!-- REVENUE -->
+        <div class="bg-gradient-to-r from-emerald-500 to-emerald-700 text-white p-6 rounded-2xl shadow-lg">
+            <p class="text-sm opacity-80">Total Pendapatan</p>
+            <h2 class="text-3xl font-bold mt-2">
+                Rp {{ number_format($totalRevenue,0,',','.') }}
+            </h2>
+        </div>
 
-        <p class="text-3xl font-bold mt-2">
-            {{ $totalProducts }} Item
-        </p>
+        <!-- PRODUCT -->
+        <div class="bg-gradient-to-r from-blue-500 to-blue-700 text-white p-6 rounded-2xl shadow-lg">
+            <p class="text-sm opacity-80">Total Produk</p>
+            <h2 class="text-3xl font-bold mt-2">
+                {{ $totalProducts }}
+            </h2>
+        </div>
 
-    </div>
-
-
-    <!-- TOTAL STOK -->
-    <div class="bg-gradient-to-r from-orange-500 to-orange-600 
-                text-white rounded-xl p-6 shadow-lg 
-                hover:scale-105 transition duration-300">
-
-        <p class="text-sm opacity-80">Total Stok</p>
-
-        <p class="text-3xl font-bold mt-2">
-            {{ $totalStock }} Unit
-        </p>
-
-    </div>
-
-</div>
-
-
-
-<!-- ===============================
-GRAFIK PENJUALAN
-=============================== -->
-
-<div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-
-    <h3 class="text-lg font-bold text-slate-800 mb-4">
-        Grafik Pendapatan Bulanan ({{ date('Y') }})
-    </h3>
-
-    <div class="h-80">
-
-        <canvas id="revenueChart"></canvas>
-
-    </div>
-
-</div>
-
-
-
-<!-- ===============================
-TRANSAKSI TERAKHIR
-=============================== -->
-
-<div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-    <div class="px-6 py-4 border-b flex justify-between items-center">
-
-        <h3 class="font-bold text-slate-800">
-            Transaksi Terakhir
-        </h3>
-
-        <a href="{{ route('transactions.index') }}"
-           class="text-sm bg-emerald-500 text-white px-3 py-1 rounded hover:bg-emerald-600 transition">
-
-            Lihat Semua
-
-        </a>
+        <!-- STOCK -->
+        <div class="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6 rounded-2xl shadow-lg">
+            <p class="text-sm opacity-80">Total Stok</p>
+            <h2 class="text-3xl font-bold mt-2">
+                {{ $totalStock }}
+            </h2>
+        </div>
 
     </div>
 
 
-    <div class="overflow-x-auto">
+    <!-- CHART + SIDE -->
+    <div class="grid md:grid-cols-3 gap-6 mb-8">
 
-        <table class="w-full text-left">
+        <!-- CHART -->
+        <div class="md:col-span-2 bg-white p-6 rounded-2xl shadow border">
 
-            <thead class="bg-slate-100 text-slate-600 text-xs uppercase">
+            <h3 class="font-semibold text-slate-700 mb-4">
+                Grafik Pendapatan Bulanan
+            </h3>
 
-                <tr>
+            <canvas id="revenueChart"></canvas>
 
-                    <th class="px-6 py-3">Produk</th>
+        </div>
 
-                    <th class="px-6 py-3">Tanggal</th>
+        <!-- QUICK INFO -->
+        <div class="bg-white p-6 rounded-2xl shadow border">
 
-                    <th class="px-6 py-3">Jumlah</th>
+            <h3 class="font-semibold text-slate-700 mb-4">
+                Insight Cepat
+            </h3>
 
-                    <th class="px-6 py-3">Total</th>
+            <div class="space-y-4 text-sm">
 
-                    <th class="px-6 py-3">Status</th>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Produk Terjual</span>
+                    <span class="font-bold text-indigo-600">
+                        {{ $recentTransactions->sum('quantity') }}
+                    </span>
+                </div>
 
-                </tr>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Transaksi Hari Ini</span>
+                    <span class="font-bold text-emerald-600">
+                        {{ $recentTransactions->count() }}
+                    </span>
+                </div>
 
-            </thead>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Status Terbanyak</span>
+                    <span class="font-bold text-purple-600">
+                        Success
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
-            <tbody class="divide-y">
+    <!-- TRANSAKSI -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+        <div class="px-6 py-4 border-b flex justify-between items-center">
+
+            <h3 class="font-bold text-slate-800">
+                Transaksi Terakhir
+            </h3>
+
+            <a href="{{ route('transactions.index') }}"
+               class="text-sm bg-indigo-500 text-white px-3 py-1 rounded hover:bg-indigo-600">
+                Lihat Semua
+            </a>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-sm">
+
+                <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
+                    <tr>
+                        <th class="px-6 py-4">Produk</th>
+                        <th class="px-6 py-4">Tanggal</th>
+                        <th class="px-6 py-4">Qty</th>
+                        <th class="px-6 py-4">Total</th>
+                        <th class="px-6 py-4">Status</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y">
 
                 @forelse($recentTransactions as $trx)
 
-                <tr class="hover:bg-emerald-50 transition">
+                <tr class="hover:bg-slate-50">
 
-                    <td class="px-6 py-4 font-medium text-slate-700">
+                    <td class="px-6 py-4 font-medium text-slate-800">
                         {{ $trx->product->name }}
                     </td>
 
-                    <td class="px-6 py-4 text-slate-500 text-sm">
+                    <td class="px-6 py-4 text-slate-500 text-xs">
                         {{ $trx->created_at->format('d M Y') }}
                     </td>
 
-                    <td class="px-6 py-4">
+                    <td class="px-6 py-4 font-bold">
                         {{ $trx->quantity }}
                     </td>
 
-                    <td class="px-6 py-4 font-bold text-slate-800">
-                        Rp {{ number_format($trx->total_price, 0, ',', '.') }}
+                    <td class="px-6 py-4 font-bold text-indigo-600">
+                        Rp {{ number_format($trx->total_price,0,',','.') }}
                     </td>
 
                     <td class="px-6 py-4">
-
                         <span class="px-3 py-1 text-xs rounded-full
                         {{ $trx->status == 'completed'
                             ? 'bg-emerald-100 text-emerald-700'
                             : 'bg-yellow-100 text-yellow-700' }}">
-
                             {{ ucfirst($trx->status) }}
-
                         </span>
-
                     </td>
 
                 </tr>
@@ -177,99 +180,51 @@ TRANSAKSI TERAKHIR
                 @empty
 
                 <tr>
-
-                    <td colspan="5"
-                        class="px-6 py-8 text-center text-slate-400">
-
-                        Belum ada transaksi.
-
+                    <td colspan="5" class="text-center py-10 text-slate-400">
+                        Belum ada transaksi
                     </td>
-
                 </tr>
 
                 @endforelse
 
-            </tbody>
+                </tbody>
 
-        </table>
+            </table>
+
+        </div>
 
     </div>
 
 </div>
 
 
-
-<!-- ===============================
-CHART JS SCRIPT
-=============================== -->
-
+<!-- CHART -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
-const ctx = document.getElementById('revenueChart').getContext('2d');
-
-const labels = @json($months);
-const data = @json($chartData);
+const ctx = document.getElementById('revenueChart');
 
 new Chart(ctx, {
-
-type: 'line',
-
-data: {
-
-labels: labels,
-
-datasets: [{
-
-label: 'Pendapatan (Rp)',
-
-data: data,
-
-borderColor: '#10b981',
-
-backgroundColor: 'rgba(16,185,129,0.15)',
-
-borderWidth: 3,
-
-tension: 0.4,
-
-fill: true,
-
-pointBackgroundColor: '#ffffff',
-
-pointBorderColor: '#10b981',
-
-pointRadius: 5
-
-}]
-
-},
-
-options: {
-
-responsive: true,
-
-plugins: {
-
-legend: {
-display: true
-}
-
-},
-
-scales: {
-
-y: {
-
-beginAtZero: true
-
-}
-
-}
-
-}
-
+    type: 'line',
+    data: {
+        labels: @json($months),
+        datasets: [{
+            label: 'Pendapatan',
+            data: @json($chartData),
+            borderColor: '#6366f1',
+            backgroundColor: 'rgba(99,102,241,0.15)',
+            borderWidth: 3,
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: true }
+        }
+    }
 });
 
 </script>
