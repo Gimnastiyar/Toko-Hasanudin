@@ -23,7 +23,23 @@ font-size:12px;
 </style>
 
 </head>
+@php
+$price = $transaction->product->price;
+$qty = $transaction->quantity;
 
+$subtotal = $price * $qty;
+
+$discount = $transaction->discount ?? 0;
+$type = $transaction->discount_type ?? 'nominal';
+
+if ($type == 'percent') {
+    $discountValue = ($discount / 100) * $subtotal;
+} else {
+    $discountValue = $discount;
+}
+
+$total = $subtotal - $discountValue;
+@endphp
 <body onload="window.print()" class="flex justify-center bg-gray-100 py-10">
 
 <div class="bg-white w-[80mm] p-4 shadow">
@@ -82,7 +98,7 @@ TOKO HASAN
 </span>
 
 <span>
-Rp {{ number_format($transaction->total_price,0,',','.') }}
+Rp {{ number_format($subtotal,0,',','.') }}
 </span>
 
 </div>
@@ -92,7 +108,32 @@ Rp {{ number_format($transaction->total_price,0,',','.') }}
 
 <div class="border-b border-dashed my-2"></div>
 
+<div class="text-[11px]">
 
+<div class="flex justify-between">
+<span>Subtotal</span>
+<span>Rp {{ number_format($subtotal,0,',','.') }}</span>
+</div>
+
+@if($discount > 0)
+
+<div class="flex justify-between">
+<span>Diskon</span>
+<span>
+{{ $type == 'percent'
+    ? $discount.'%'
+    : 'Rp '.number_format($discount,0,',','.') }}
+</span>
+</div>
+
+<div class="flex justify-between text-red-500">
+<span>Potongan</span>
+<span>- Rp {{ number_format($discountValue,0,',','.') }}</span>
+</div>
+
+@endif
+
+</div>
 <!-- TOTAL -->
 
 <div class="flex justify-between font-bold text-sm">
@@ -100,7 +141,7 @@ Rp {{ number_format($transaction->total_price,0,',','.') }}
 <span>TOTAL</span>
 
 <span>
-Rp {{ number_format($transaction->total_price,0,',','.') }}
+Rp {{ number_format($total,0,',','.') }}
 </span>
 
 </div>

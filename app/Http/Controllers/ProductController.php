@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Supplier;
 class ProductController extends Controller
 {
 
@@ -20,8 +20,7 @@ class ProductController extends Controller
 
     public function index()
     {
-        $products = Product::latest()->paginate(10);
-
+        $products = Product::with('supplier')->latest()->paginate(10);
         return view('products.index', compact('products'));
     }
 
@@ -35,9 +34,11 @@ class ProductController extends Controller
     */
 
     public function create()
-    {
-        return view('products.create');
-    }
+{
+    $suppliers = Supplier::where('status', 'aktif')->get();
+
+    return view('products.create', compact('suppliers'));
+}
 
 
     /*
@@ -54,11 +55,14 @@ class ProductController extends Controller
 
         // Validasi input form
         $request->validate([
+            'barcode' => 'required|unique:products,barcode',
             'name' => 'required|min:3',
             'price' => 'required|numeric',
+            'cost_price' => 'required|numeric',
             'stock' => 'required|integer',
             'category' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg|max:2048', // maksimal 2MB
+            'supplier_id' => 'nullable|exists:suppliers,id',
         ]);
 
 
@@ -76,12 +80,15 @@ class ProductController extends Controller
 
         // Simpan data produk ke database
         Product::create([
+            'barcode' => $request->barcode,
             'name' => $request->name,
             'category' => $request->category,
             'price' => $request->price,
+            'cost_price' => $request->cost_price,
             'stock' => $request->stock,
             'description' => $request->description,
             'image' => $imagePath,
+            'supplier_id' => $request->supplier_id,
         ]);
 
 
@@ -103,9 +110,11 @@ class ProductController extends Controller
     */
 
     public function edit(Product $product)
-    {
-        return view('products.edit', compact('product'));
-    }
+{
+    $suppliers = Supplier::all();
+
+    return view('products.edit', compact('product', 'suppliers'));
+}
 
 
 
@@ -122,11 +131,14 @@ class ProductController extends Controller
 
         // Validasi input (gambar optional)
         $request->validate([
+            'barcode' => 'nullable|unique:products,barcode,' . $product->id,
             'name' => 'required|min:3',
             'price' => 'required|numeric',
+            'cost_price' => 'required|numeric',
             'stock' => 'required|integer',
             'category' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'supplier_id' => 'nullable|exists:suppliers,id',
         ]);
 
 

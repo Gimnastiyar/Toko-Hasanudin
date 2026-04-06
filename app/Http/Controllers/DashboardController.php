@@ -25,7 +25,16 @@ class DashboardController extends Controller
         $totalRevenue = Transaction::where('status', 'completed')
                             ->sum('total_price');
 
-
+// 2. Hitung Profit
+$transactions = Transaction::with('product')->where('status', 'completed')->get();
+$totalProfit = 0;
+foreach ($transactions as $trx) {
+if ($trx->product) {
+$modal = $trx->product->cost_price * $trx->quantity;
+$omzet = $trx->total_price;
+$totalProfit += ($omzet - $modal);
+}
+}   
         /*
         |--------------------------------------------------------------------------
         | 2. DATA GRAFIK PENJUALAN PER BULAN
@@ -84,6 +93,7 @@ class DashboardController extends Controller
             'totalProducts' => $totalProducts,
             'totalStock' => $totalStock,
             'totalRevenue' => $totalRevenue,
+            'totalProfit' => $totalProfit,
             'recentTransactions' => $recentTransactions,
             'chartData' => $chartData,
             'months' => $months

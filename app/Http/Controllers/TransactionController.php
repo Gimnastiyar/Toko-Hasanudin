@@ -35,33 +35,51 @@ class TransactionController extends Controller
 
     // Simpan transaksi
     public function store(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required',
-            'quantity' => 'required|integer|min:1'
-        ]);
+{
+    $request->validate([
+        'product_id' => 'required',
+        'quantity' => 'required|integer|min:1',
+        'discount' => 'nullable|numeric|min:0',
+        'discount_type' => 'nullable|in:percent,nominal'
+    ]);
 
-        $product = Product::findOrFail($request->product_id);
+    $product = Product::findOrFail($request->product_id);
 
-        if ($request->quantity > $product->stock) {
-            return back()->with('error', 'Stok tidak mencukupi!');
-        }
-
-        $total = $product->price * $request->quantity;
-
-        $product->stock -= $request->quantity;
-        $product->save();
-
-        Transaction::create([
-            'product_id' => $product->id,
-            'quantity' => $request->quantity,
-            'total_price' => $total,
-            'status' => 'completed'
-        ]);
-
-        return redirect()->route('transactions.index')
-            ->with('success', 'Transaksi berhasil disimpan');
+    if ($request->quantity > $product->stock) {
+        return back()->with('error', 'Stok tidak mencukupi!');
     }
+
+    $price = $product->price;
+    $qty = $request->quantity;
+
+    $subtotal = $price * $qty;
+
+    $discount = $request->discount ?? 0;
+    $discountType = $request->discount_type ?? 'nominal';
+
+    if ($discountType == 'percent') {
+        $discountValue = ($discount / 100) * $subtotal;
+    } else {
+        $discountValue = $discount;
+    }
+
+    $total = max(0, $subtotal - $discountValue);
+
+    // kurangi stok
+    $product->stock -= $qty;
+    $product->save();
+
+    Transaction::create([
+        'product_id' => $product->id,
+        'quantity' => $qty,
+        'total_price' => $total,
+        'discount' => $discount,
+        'discount_type' => $discountType,
+        'status' => 'completed'
+    ]);
+
+    return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil disimpan');
+}
 
     // Print struk
     public function print(Transaction $transaction)
