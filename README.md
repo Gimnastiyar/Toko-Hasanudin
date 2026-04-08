@@ -1,4 +1,4 @@
-# 🏪 Toko Hasanudin
+#  Toko Hasanudin
 
 Aplikasi sistem informasi penjualan UMKM berbasis Laravel yang digunakan untuk mengelola produk, transaksi, supplier, dan laporan.
 
@@ -20,7 +20,6 @@ Aplikasi sistem informasi penjualan UMKM berbasis Laravel yang digunakan untuk m
 
 Gunakan akun berikut untuk masuk ke sistem:
 
-### 👤 Admin
 - Email: admin@gmail.com
 - Password: 123456
 
