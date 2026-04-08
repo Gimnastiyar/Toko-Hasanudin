@@ -5,8 +5,8 @@
 
     <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
-            <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Katalog Produk</h1>
-            <p class="text-slate-500 mt-1 flex items-center gap-2">
+            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Katalog Produk</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
                 <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                 Total {{ $products->total() }} produk terdaftar di sistem.
             </p>
@@ -19,7 +19,7 @@
                 </div>
                 <input type="text" name="search" value="{{ request('search') }}"
                     placeholder="Cari nama atau barcode..."
-                    class="block w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all outline-none">
+                    class="block w-full pl-10 pr-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl text-sm bg-white dark:bg-slate-800 dark:text-white focus:ring-4 focus:ring-indigo-100 dark:focus:ring-indigo-900/50 focus:border-indigo-500 transition-all outline-none">
             </form>
 
             <a href="{{ route('products.create') }}"
@@ -40,11 +40,11 @@
     </div>
     @endif
 
-    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-slate-50/50 border-b border-slate-100">
+                    <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
                         <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Informasi Produk</th>
                         <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Supplier</th>
                         <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Kategori</th>
@@ -53,58 +53,65 @@
                         <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Opsi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-50">
+                <tbody class="divide-y divide-slate-50 dark:divide-slate-700/50">
                     @forelse ($products as $product)
-                    <tr class="hover:bg-indigo-50/20 transition-colors group">
+                    <tr class="hover:bg-indigo-50/20 dark:hover:bg-indigo-900/10 transition-colors group">
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center gap-4">
                                 <div class="relative shrink-0">
                                     @if($product->image)
                                         <img src="{{ asset('storage/'.$product->image) }}"
-                                             class="h-14 w-14 rounded-2xl object-cover ring-2 ring-slate-100">
+                                             class="h-14 w-14 rounded-2xl object-cover ring-2 ring-slate-100 dark:ring-slate-700">
                                     @else
-                                        <div class="h-14 w-14 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-400">
+                                        <div class="h-14 w-14 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center text-slate-400">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                         </div>
                                     @endif
                                 </div>
                                 <div>
-                                    <h3 class="font-bold text-slate-800 text-sm tracking-tight group-hover:text-indigo-600 transition-colors">{{ $product->name }}</h3>
-                                    <code class="text-[10px] text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100 uppercase tracking-tighter">{{ $product->barcode }}</code>
+                                    <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm tracking-tight group-hover:text-indigo-600 transition-colors">{{ $product->name }}</h3>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <code class="text-[10px] text-slate-400 bg-slate-50 dark:bg-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-100 dark:border-slate-600 uppercase tracking-tighter">{{ $product->barcode }}</code>
+                                        @if($product->expired_date)
+                                            <span class="text-[10px] text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30 px-1.5 py-0.5 rounded border border-rose-100 dark:border-rose-800/50 font-bold uppercase tracking-tighter">
+                                                Exp: {{ \Carbon\Carbon::parse($product->expired_date)->format('d M Y') }}
+                                            </span>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </td>
                         
-                        <td class="px-6 py-4 text-sm text-slate-600">
+                        <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
                             {{ $product->supplier->nama_supplier ?? '-' }}
                         </td>
 
                         <td class="px-6 py-4">
                             @php
                                 $colors = [
-                                    'Makanan' => 'bg-amber-100 text-amber-700 border-amber-200',
-                                    'Minuman' => 'bg-sky-100 text-sky-700 border-sky-200',
-                                    'Elektronik' => 'bg-purple-100 text-purple-700 border-purple-200'
+                                    'Makanan' => 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50',
+                                    'Minuman' => 'bg-sky-100 dark:bg-sky-900/30 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800/50',
+                                    'Elektronik' => 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 border-purple-200 dark:border-purple-800/50'
                                 ];
-                                $colorClass = $colors[$product->category] ?? 'bg-slate-100 text-slate-700 border-slate-200';
+                                $colorClass = $colors[$product->category] ?? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600';
                             @endphp
                             <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border {{ $colorClass }}">
                                 {{ $product->category }}
                             </span>
                         </td>
 
-                        <td class="px-6 py-4 font-black text-slate-900 text-sm">
+                        <td class="px-6 py-4 font-black text-slate-900 dark:text-white text-sm">
                             Rp {{ number_format($product->price,0,',','.') }}
                         </td>
 
                         <td class="px-6 py-4">
                             <div class="flex flex-col gap-1.5 min-w-[120px]">
                                 <div class="flex justify-between items-end">
-                                    <span class="text-xs font-black {{ $product->stock > 10 ? 'text-emerald-600' : 'text-rose-600' }}">
+                                    <span class="text-xs font-black {{ $product->stock > 10 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
                                         {{ $product->stock }} <span class="text-[10px] font-normal text-slate-400">tersedia</span>
                                     </span>
                                 </div>
-                                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
                                     <div class="h-full rounded-full transition-all duration-700 ease-out {{ $product->stock > 10 ? 'bg-emerald-500' : 'bg-rose-500' }}"
                                          style="width: {{ min($product->stock * 5, 100) }}%">
                                     </div>
@@ -137,11 +144,11 @@
                     <tr>
                         <td colspan="6" class="py-24 text-center">
                             <div class="flex flex-col items-center">
-                                <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-10 h-10 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                                <div class="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                                    <svg class="w-10 h-10 text-slate-200 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
                                 </div>
-                                <h3 class="text-slate-500 font-bold">Produk Tidak Ditemukan</h3>
-                                <p class="text-slate-400 text-sm">Coba kata kunci lain atau tambah produk baru.</p>
+                                <h3 class="text-slate-500 dark:text-slate-400 font-bold">Produk Tidak Ditemukan</h3>
+                                <p class="text-slate-400 dark:text-slate-500 text-sm">Coba kata kunci lain atau tambah produk baru.</p>
                             </div>
                         </td>
                     </tr>

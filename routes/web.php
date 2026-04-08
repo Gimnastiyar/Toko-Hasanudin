@@ -81,13 +81,16 @@ Route::middleware('auth')->group(function () {
     |-----------------------------------------
     */
     Route::resource('transactions', TransactionController::class);
-/*
-|-----------------------------------------
-| SUPPLIER
-|-----------------------------------------
-*/
-Route::resource('suppliers', SupplierController::class);
-Route::post('/suppliers/bayar', [SupplierController::class, 'bayar'])->name('suppliers.bayar');
+
+    /*
+    |-----------------------------------------
+    | SUPPLIER
+    |-----------------------------------------
+    */
+    Route::resource('suppliers', SupplierController::class);
+    Route::post('/suppliers/bayar', [SupplierController::class, 'bayar'])
+        ->name('suppliers.bayar');
+
     /*
     |-----------------------------------------
     | PRINT STRUK
@@ -95,8 +98,15 @@ Route::post('/suppliers/bayar', [SupplierController::class, 'bayar'])->name('sup
     */
     Route::get('/transactions/{transaction}/print', [TransactionController::class, 'print'])
         ->name('transactions.print');
-    // Route Laporan
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+
+    /*
+    |-----------------------------------------
+    | LAPORAN
+    |-----------------------------------------
+    */
+    Route::get('/reports', [ReportController::class, 'index'])
+        ->name('reports.index');
+
     /*
     |-----------------------------------------
     | LOGOUT
@@ -116,4 +126,4 @@ Route::post('/suppliers/bayar', [SupplierController::class, 'bayar'])->name('sup
 
 Route::get('/', function () {
     return redirect()->route('login');
-});
+}); 

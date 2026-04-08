@@ -41,14 +41,14 @@ public function index(Request $request)
 
         $discount = $trx->discount ?? 0;
 
-        // 🔥 HITUNG DISKON
+        //  HITUNG DISKON
         if ($trx->discount_type == 'percent') {
             $discountValue = ($discount / 100) * $subtotal;
         } else {
             $discountValue = $discount;
         }
 
-        // 🔥 TOTAL SUDAH DIKURANGI DISKON
+        //  TOTAL SUDAH DIKURANGI DISKON
         $revenue = $trx->total_price;
 
         $cost = $trx->product->cost_price * $qty;
@@ -62,15 +62,15 @@ public function index(Request $request)
     }
 }
 
-    // 🔥 HUTANG SUPPLIER
+    //  HUTANG SUPPLIER
     $totalHutangSupplier = Supplier::sum('saldo_hutang');
 
     $suppliers = Supplier::where('saldo_hutang', '>', 0)->get();
 
-    // 🔥 BARU HITUNG NET PROFIT (SETELAH SEMUA ADA)
+    //  BARU HITUNG NET PROFIT (SETELAH SEMUA ADA)
     $netProfit = $totalProfit - $totalHutangSupplier;
 
-    // 🔥 RETURN (SUDAH BENAR)
+    //  RETURN (SUDAH BENAR)
     return view('reports.index', compact(
         'transactions',
         'totalRevenue',

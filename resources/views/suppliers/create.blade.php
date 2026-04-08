@@ -9,27 +9,27 @@
         <div class="flex items-center gap-5">
             <a href="{{ route('suppliers.index') }}" 
                aria-label="Kembali ke daftar supplier"
-               class="group flex items-center justify-center w-11 h-11 bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-indigo-600 hover:border-indigo-200 hover:shadow-sm transition-all duration-200">
+               class="group flex items-center justify-center w-11 h-11 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-400 dark:text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-500 hover:shadow-sm transition-all duration-200">
                 <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                 </svg>
             </a>
             <div>
                 <nav class="flex mb-1">
-                    <ol class="flex items-center space-x-2 text-xs font-medium text-slate-400 uppercase tracking-wider">
+                    <ol class="flex items-center space-x-2 text-xs font-medium text-slate-400 dark:text-slate-500 uppercase tracking-wider">
                         <li>Supplier</li>
                         <li>&rsaquo;</li>
-                        <li class="text-indigo-600">Tambah</li>
+                        <li class="text-indigo-600 dark:text-indigo-400">Tambah</li>
                     </ol>
                 </nav>
-                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
                     Tambah Supplier
                 </h1>
             </div>
         </div>
     </div>
 
-    <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/40 border border-slate-100 overflow-hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-100 dark:border-slate-700 overflow-hidden">
 
         <form method="POST" action="{{ route('suppliers.store') }}">
             @csrf
@@ -53,11 +53,11 @@
             @endif
 
             <div class="p-8">
-                <div class="mb-8 pb-5 border-b border-slate-100">
-                    <h2 class="text-lg font-bold text-slate-800">
+                <div class="mb-8 pb-5 border-b border-slate-100 dark:border-slate-700">
+                    <h2 class="text-lg font-bold text-slate-800 dark:text-white">
                         Informasi Supplier
                     </h2>
-                    <p class="text-sm text-slate-500 mt-1">
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
                         Isi kelengkapan data operasional dan kontak supplier.
                     </p>
                 </div>
@@ -66,9 +66,9 @@
 
             </div>
 
-            <div class="bg-slate-50/80 border-t border-slate-100 px-8 py-5 flex items-center justify-end gap-3">
+            <div class="bg-slate-50/80 dark:bg-slate-800/80 border-t border-slate-100 dark:border-slate-700 px-8 py-5 flex items-center justify-end gap-3">
                 <a href="{{ route('suppliers.index') }}"
-                   class="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-200/50 hover:text-slate-900 transition-colors">
+                   class="px-6 py-2.5 rounded-xl text-sm font-medium text-slate-600 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-white transition-colors">
                     Batal
                 </a>
 
@@ -81,7 +81,7 @@
         </form>
     </div>
 
-    <p class="text-center mt-6 text-slate-400 text-sm">
+    <p class="text-center mt-6 text-slate-400 dark:text-slate-500 text-sm">
         Field bertanda <span class="text-rose-500 font-bold">*</span> wajib diisi
     </p>
 

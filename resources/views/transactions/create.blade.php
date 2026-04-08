@@ -7,16 +7,16 @@
     
     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
-            <h1 class="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-                <svg class="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
+                <svg class="w-8 h-8 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                 Kasir Pintar
             </h1>
-            <p class="text-sm text-slate-500 mt-1">Sistem kasir cerdas untuk proses transaksi cepat.</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Sistem kasir cerdas untuk proses transaksi cepat.</p>
         </div>
         
-        <div class="bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-3">
-            <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            <span id="current-date" class="text-sm font-semibold text-slate-700 uppercase tracking-wide"></span>
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-2.5 rounded-xl shadow-sm flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <span id="current-date" class="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide"></span>
         </div>
     </div>
 
@@ -28,35 +28,35 @@
             
             <div class="lg:col-span-8 flex flex-col gap-6">
                 
-                <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 relative overflow-hidden group">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-50 rounded-full blur-3xl group-focus-within:bg-indigo-100 transition-colors duration-500"></div>
+                <div class="bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 relative overflow-hidden group">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-50 dark:bg-indigo-900/10 rounded-full blur-3xl group-focus-within:bg-indigo-100 dark:group-focus-within:bg-indigo-900/20 transition-colors duration-500"></div>
 
                     <div class="relative z-10">
-                        <label for="barcode" class="block text-sm font-bold text-slate-700 mb-3 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                        <label for="barcode" class="block text-sm font-bold text-slate-700 dark:text-white mb-3 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
                             Pindai / Ketik Barcode
                         </label>
                         
                         <div class="flex flex-col sm:flex-row gap-4">
                             <div class="relative flex-1">
                                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <svg class="h-6 w-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <svg class="h-6 w-6 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                     </svg>
                                 </div>
                                 <input type="text" id="barcode" autocomplete="off"
-                                    class="block w-full pl-12 pr-4 py-4 bg-slate-50/50 border-2 border-slate-200 rounded-xl focus:bg-white focus:ring-0 focus:border-indigo-500 transition-colors text-xl font-mono text-slate-800 placeholder-slate-400 shadow-inner"
+                                    class="block w-full pl-12 pr-4 py-4 bg-slate-50/50 dark:bg-slate-900/50 border-2 border-slate-200 dark:border-slate-700/50 rounded-xl focus:bg-white dark:focus:bg-slate-800 focus:ring-0 focus:border-indigo-500 dark:focus:border-indigo-400 transition-colors text-xl font-mono text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 shadow-inner"
                                     placeholder="Contoh: 899..." autofocus>
                             </div>
                             
                             <button type="button" onclick="checkBarcode()"
-                                class="h-16 px-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg rounded-xl transition-all shadow-md shadow-indigo-200 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 shrink-0">
+                                class="h-16 px-8 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-lg rounded-xl transition-all shadow-md shadow-indigo-200 dark:shadow-none hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 shrink-0">
                                 Cari
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                             </button>
                         </div>
                         
-                        <div id="status" class="mt-4 flex items-center gap-2 text-sm font-medium text-slate-500">
+                        <div id="status" class="mt-4 flex items-center gap-2 text-sm font-medium text-slate-500 dark:text-slate-400">
                             <span class="relative flex h-3 w-3">
                               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-slate-400 opacity-75"></span>
                               <span class="relative inline-flex rounded-full h-3 w-3 bg-slate-500"></span>
@@ -66,36 +66,36 @@
                     </div>
                 </div>
 
-                <div id="productBox" class="flex-1 bg-white border-2 border-dashed border-slate-200 rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center transition-all duration-300 relative min-h-[300px]">
-                    <svg id="placeholder-bg" class="absolute inset-0 w-full h-full text-slate-50 opacity-50 pointer-events-none" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z M50,20 L80,80 L20,80 Z"/></svg>
+                <div id="productBox" class="flex-1 bg-white dark:bg-slate-800 border-2 border-dashed border-slate-200 dark:border-slate-700/50 rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center transition-all duration-300 relative min-h-[300px]">
+                    <svg id="placeholder-bg" class="absolute inset-0 w-full h-full text-slate-50 dark:text-slate-800/10 opacity-50 pointer-events-none" fill="currentColor" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z M50,20 L80,80 L20,80 Z"/></svg>
 
                     <div class="relative z-10 flex flex-col items-center w-full max-w-lg mx-auto text-center">
-                        <div id="product-icon-container" class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6 shadow-sm border border-slate-200 transition-colors duration-300">
-                            <svg id="display-icon" class="w-12 h-12 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <div id="product-icon-container" class="w-24 h-24 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-6 shadow-sm border border-slate-200 dark:border-slate-600 transition-colors duration-300">
+                            <svg id="display-icon" class="w-12 h-12 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                         </div>
                         
-                        <h2 id="name" class="text-3xl font-black text-slate-800 mb-2 tracking-tight">Belum Ada Produk</h2>
-                        <p id="display-barcode" class="text-base text-slate-500 mb-8 font-mono bg-slate-100 px-4 py-1 rounded-full border border-slate-200 inline-block">Silakan scan barang terlebih dahulu</p>
+                        <h2 id="name" class="text-3xl font-black text-slate-800 dark:text-white mb-2 tracking-tight">Belum Ada Produk</h2>
+                        <p id="display-barcode" class="text-base text-slate-500 dark:text-slate-400 mb-8 font-mono bg-slate-100 dark:bg-slate-700 px-4 py-1 rounded-full border border-slate-200 dark:border-slate-600 inline-block">Silakan scan barang terlebih dahulu</p>
 
                         <div class="grid grid-cols-2 gap-4 sm:gap-6 w-full opacity-50 grayscale transition-all duration-300" id="detail-grid">
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center relative overflow-hidden">
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-center relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-indigo-500 hidden" id="price-line"></div>
-                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Harga Satuan</p>
-                                <p class="text-2xl font-black text-indigo-600" id="price">Rp 0</p>
+                                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">Harga Satuan</p>
+                                <p class="text-2xl font-black text-indigo-600 dark:text-indigo-400" id="price">Rp 0</p>
                             </div>
                             
-                            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm text-center relative overflow-hidden">
+                            <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm text-center relative overflow-hidden">
                                 <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500 hidden" id="stock-line"></div>
-                                <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Stok Tersedia</p>
+                                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-2">Stok Tersedia</p>
                                 <div class="flex items-center justify-center gap-2">
-                                    <p class="text-2xl font-black text-slate-700" id="stock">0</p>
-                                    <span class="text-sm font-medium text-slate-500 mt-1">Pcs</span>
+                                    <p class="text-2xl font-black text-slate-700 dark:text-slate-300" id="stock">0</p>
+                                    <span class="text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">Pcs</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <button type="button" id="btn-reset" onclick="resetForm()" class="absolute top-4 right-4 p-2 bg-red-50 text-red-500 hover:bg-red-100 hover:text-red-600 rounded-lg hidden transition-colors" title="Batal Pilih Produk">
+                    <button type="button" id="btn-reset" onclick="resetForm()" class="absolute top-4 right-4 p-2 bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 hover:text-red-600 dark:hover:text-red-300 rounded-lg hidden transition-colors" title="Batal Pilih Produk">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                 </div>
@@ -246,12 +246,12 @@ async function checkBarcode() {
             let displayIcon = document.getElementById('display-icon');
             let detailGrid = document.getElementById('detail-grid');
 
-            productBox.classList.remove('border-dashed', 'border-slate-200');
-            productBox.classList.add('border-solid', 'border-indigo-200', 'bg-indigo-50/20', 'shadow-xl');
+            productBox.classList.remove('border-dashed', 'border-slate-200', 'dark:border-slate-700/50');
+            productBox.classList.add('border-solid', 'border-indigo-200', 'dark:border-indigo-800/50', 'bg-indigo-50/20', 'dark:bg-indigo-900/10', 'shadow-xl');
             
-            iconContainer.classList.remove('bg-slate-100');
-            iconContainer.classList.add('bg-indigo-600', 'shadow-lg', 'shadow-indigo-300');
-            displayIcon.classList.remove('text-slate-400');
+            iconContainer.classList.remove('bg-slate-100', 'dark:bg-slate-700');
+            iconContainer.classList.add('bg-indigo-600', 'shadow-lg', 'shadow-indigo-300', 'dark:shadow-none');
+            displayIcon.classList.remove('text-slate-400', 'dark:text-slate-500');
             displayIcon.classList.add('text-white');
             displayIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>`;
 
@@ -368,13 +368,13 @@ function resetForm(clearInput = true){
     document.getElementById('discount-label').classList.add('hidden');
 
     let productBox = document.getElementById('productBox');
-    productBox.className = "flex-1 bg-white border-2 border-dashed border-slate-200 rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center transition-all duration-300 relative min-h-[300px]";
+    productBox.className = "flex-1 bg-white dark:bg-slate-800 border-2 border-dashed border-slate-200 dark:border-slate-700/50 rounded-2xl p-8 sm:p-12 flex flex-col items-center justify-center transition-all duration-300 relative min-h-[300px]";
     
     let iconContainer = document.getElementById('product-icon-container');
-    iconContainer.className = "w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6 shadow-sm border border-slate-200 transition-colors duration-300";
+    iconContainer.className = "w-24 h-24 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mb-6 shadow-sm border border-slate-200 dark:border-slate-600 transition-colors duration-300";
     
     let displayIcon = document.getElementById('display-icon');
-    displayIcon.className = "w-12 h-12 text-slate-400";
+    displayIcon.className = "w-12 h-12 text-slate-400 dark:text-slate-500";
     displayIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>`;
 
     let detailGrid = document.getElementById('detail-grid');

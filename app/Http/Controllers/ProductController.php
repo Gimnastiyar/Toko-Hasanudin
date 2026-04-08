@@ -63,6 +63,7 @@ class ProductController extends Controller
             'category' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg|max:2048', // maksimal 2MB
             'supplier_id' => 'nullable|exists:suppliers,id',
+            'expired_date' => 'nullable|date',
         ]);
 
 
@@ -89,6 +90,7 @@ class ProductController extends Controller
             'description' => $request->description,
             'image' => $imagePath,
             'supplier_id' => $request->supplier_id,
+            'expired_date' => $request->expired_date,
         ]);
 
 
@@ -139,6 +141,7 @@ class ProductController extends Controller
             'category' => 'required',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'supplier_id' => 'nullable|exists:suppliers,id',
+            'expired_date' => 'nullable|date',
         ]);
 
 
