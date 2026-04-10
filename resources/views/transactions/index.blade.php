@@ -73,10 +73,11 @@
                     <tr>
                         <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Detail Transaksi</th>
                         <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Informasi Produk</th>
+                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Kasir</th>
                         <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest text-center">Jumlah</th>
                         <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Subtotal</th>
                         <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Status Pembayaran</th>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest text-right">Invoice</th>
+                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest text-right">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
@@ -108,6 +109,17 @@
                                 </div>
                             </div>
                         </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-2">
+                                <div class="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">
+                                    {{ strtoupper(substr($trx->user->name ?? '?', 0, 1)) }}
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200">{{ $trx->user->name ?? '-' }}</p>
+                                    <p class="text-[10px] text-slate-400 uppercase">{{ $trx->user->role ?? '-' }}</p>
+                                </div>
+                            </div>
+                        </td>
                         <td class="px-6 py-4 text-center font-bold text-slate-700 dark:text-slate-300">
                             {{ $trx->quantity }} <span class="text-[10px] text-slate-400 dark:text-slate-500 font-normal ml-1 whitespace-nowrap">UNIT</span>
                         </td>
@@ -115,7 +127,7 @@
                             Rp {{ number_format($trx->total_price,0,',','.') }}
                         </td>
                         <td class="px-6 py-4">
-                            @if($trx->status == 'success')
+                            @if($trx->status == 'success' || $trx->status == 'completed')
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50 shadow-sm">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                                     Selesai
@@ -128,16 +140,42 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 text-right">
-                            <a href="{{ route('transactions.print',$trx->id) }}"
-                               target="_blank"
-                               class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all shadow-sm active:scale-90">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                            </a>
+                            <div class="flex items-center justify-end gap-2">
+                                {{-- Tombol Toggle Status Manual --}}
+                                <form action="{{ route('transactions.updateStatus', $trx->id) }}" method="POST" class="inline-block">
+                                    @csrf @method('PATCH')
+                                    @if($trx->status == 'success' || $trx->status == 'completed')
+                                        <input type="hidden" name="status" value="pending">
+                                        <button type="submit"
+                                                class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-amber-500 dark:text-amber-400 rounded-xl hover:text-amber-600 dark:hover:text-amber-300 hover:border-amber-200 dark:hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-all shadow-sm active:scale-90"
+                                                title="Ubah ke Pending"
+                                                onclick="return confirm('Ubah status pembayaran menjadi Pending?')">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        </button>
+                                    @else
+                                        <input type="hidden" name="status" value="success">
+                                        <button type="submit"
+                                                class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-emerald-500 dark:text-emerald-400 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-300 hover:border-emerald-200 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-all shadow-sm active:scale-90"
+                                                title="Ubah ke Selesai"
+                                                onclick="return confirm('Ubah status pembayaran menjadi Selesai?')">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                        </button>
+                                    @endif
+                                </form>
+
+                                {{-- Tombol Print Struk --}}
+                                <a href="{{ route('transactions.print',$trx->id) }}"
+                                   target="_blank"
+                                   class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all shadow-sm active:scale-90"
+                                   title="Print Struk">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="py-20 text-center">
+                        <td colspan="7" class="py-20 text-center">
                             <div class="flex flex-col items-center">
                                 <div class="w-20 h-20 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
                                     <svg class="w-10 h-10 text-slate-200 dark:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>

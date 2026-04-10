@@ -287,18 +287,34 @@
     
     @media print {
         @page { 
-            margin: 1.5cm; 
+            margin: 1cm; 
             size: auto;
         }
         body { 
             background: white !important; 
+            color: black !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
         .shadow-sm, .shadow-md, .shadow-xl, .shadow-lg { box-shadow: none !important; }
-        .bg-slate-50 { background-color: transparent !important; }
+        .bg-slate-50, .bg-slate-100, .bg-slate-900, .bg-indigo-600 { background-color: transparent !important; }
+        
+        /* Pastikan teks terlihat saat diprint */
+        h1, h2, h3, p, span, td, th {
+            color: black !important;
+        }
+        
+        .dark h1, .dark h2, .dark h3, .dark p, .dark span, .dark td, .dark th {
+            color: black !important;
+        }
+
         table, tr, td, th {
             page-break-inside: avoid;
+            border-color: #e2e8f0 !important;
+        }
+        
+        .bg-slate-900 {
+            border: 2px solid black !important;
         }
     }
 </style>

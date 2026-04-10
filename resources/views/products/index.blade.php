@@ -3,6 +3,7 @@
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
+    {{-- Header --}}
     <div class="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
             <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Katalog Produk</h1>
@@ -23,15 +24,16 @@
             </form>
 
             <a href="{{ route('products.create') }}"
-               class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-2.5 rounded-xl shadow-lg shadow-indigo-100 hover:bg-indigo-700 hover:shadow-indigo-200 hover:-translate-y-0.5 transition-all font-bold">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+               class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-100 dark:shadow-none hover:bg-indigo-700 transition-all font-bold text-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Tambah Produk
             </a>
         </div>
     </div>
 
+    {{-- Alert --}}
     @if(session('success'))
-    <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 p-4 rounded-r-xl flex items-center justify-between shadow-sm animate-fade-in">
+    <div class="mb-6 bg-emerald-50 dark:bg-emerald-900/30 border-l-4 border-emerald-500 text-emerald-700 dark:text-emerald-300 p-4 rounded-r-xl flex items-center justify-between shadow-sm animate-fade-in">
         <div class="flex items-center gap-3">
             <svg class="w-5 h-5 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
             <span class="font-medium text-sm">{{ session('success') }}</span>
@@ -40,53 +42,71 @@
     </div>
     @endif
 
+    {{-- Tabel Produk --}}
     <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-700 overflow-hidden">
         <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
+            <table class="w-full text-left border-collapse table-fixed">
                 <thead>
                     <tr class="bg-slate-50/50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-700">
-                        <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Informasi Produk</th>
-                        <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Supplier</th>
-                        <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Kategori</th>
-                        <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Harga Jual</th>
-                        <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Manajemen Stok</th>
-                        <th class="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-right">Opsi</th>
+                        <th class="px-4 py-4 text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 w-[30%]">Produk</th>
+                        <th class="px-4 py-4 text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 w-[14%]">Supplier</th>
+                        <th class="px-4 py-4 text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 w-[12%]">Kategori</th>
+                        <th class="px-4 py-4 text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 w-[15%]">Harga</th>
+                        <th class="px-4 py-4 text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 w-[17%]">Stok</th>
+                        <th class="px-4 py-4 text-[11px] font-black uppercase tracking-widest text-slate-400 dark:text-slate-500 text-center w-[12%]">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-50 dark:divide-slate-700/50">
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-700/50">
                     @forelse ($products as $product)
-                    <tr class="hover:bg-indigo-50/20 dark:hover:bg-indigo-900/10 transition-colors group">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center gap-4">
+                    <tr class="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-colors group">
+                        {{-- Kolom: Info Produk --}}
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-3">
                                 <div class="relative shrink-0">
                                     @if($product->image)
                                         <img src="{{ asset('storage/'.$product->image) }}"
-                                             class="h-14 w-14 rounded-2xl object-cover ring-2 ring-slate-100 dark:ring-slate-700">
+                                             class="h-11 w-11 rounded-xl object-cover ring-2 ring-slate-100 dark:ring-slate-700"
+                                             alt="{{ $product->name }}">
                                     @else
-                                        <div class="h-14 w-14 bg-slate-100 dark:bg-slate-700 rounded-2xl flex items-center justify-center text-slate-400">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                        <div class="h-11 w-11 bg-slate-100 dark:bg-slate-700 rounded-xl flex items-center justify-center text-slate-400 dark:text-slate-500">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                         </div>
                                     @endif
                                 </div>
-                                <div>
-                                    <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm tracking-tight group-hover:text-indigo-600 transition-colors">{{ $product->name }}</h3>
-                                    <div class="flex items-center gap-2 mt-1">
-                                        <code class="text-[10px] text-slate-400 bg-slate-50 dark:bg-slate-700 dark:text-slate-300 px-1.5 py-0.5 rounded border border-slate-100 dark:border-slate-600 uppercase tracking-tighter">{{ $product->barcode }}</code>
+                                <div class="min-w-0 flex-1">
+                                    <h3 class="font-bold text-slate-800 dark:text-slate-100 text-sm tracking-tight group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">{{ $product->name }}</h3>
+                                    <div class="flex flex-wrap items-center gap-1 mt-1">
+                                        <code class="text-[10px] text-slate-400 dark:text-slate-400 bg-slate-50 dark:bg-slate-700 px-1.5 py-0.5 rounded border border-slate-100 dark:border-slate-600 uppercase tracking-tighter">{{ $product->barcode }}</code>
                                         @if($product->expired_date)
-                                            <span class="text-[10px] text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30 px-1.5 py-0.5 rounded border border-rose-100 dark:border-rose-800/50 font-bold uppercase tracking-tighter">
-                                                Exp: {{ \Carbon\Carbon::parse($product->expired_date)->format('d M Y') }}
+                                            @php
+                                                $isExpired = \Carbon\Carbon::parse($product->expired_date)->isPast();
+                                                $isNearExpiry = !$isExpired && \Carbon\Carbon::parse($product->expired_date)->diffInDays(now()) <= 30;
+                                            @endphp
+                                            <span class="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase tracking-tighter
+                                                {{ $isExpired
+                                                    ? 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30 border-red-100 dark:border-red-800/50'
+                                                    : ($isNearExpiry
+                                                        ? 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 border-amber-100 dark:border-amber-800/50'
+                                                        : 'text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-700 border-slate-100 dark:border-slate-600') }}">
+                                                EXP: {{ \Carbon\Carbon::parse($product->expired_date)->format('d M Y') }}
                                             </span>
                                         @endif
                                     </div>
                                 </div>
                             </div>
                         </td>
-                        
-                        <td class="px-6 py-4 text-sm text-slate-600 dark:text-slate-300">
-                            {{ $product->supplier->nama_supplier ?? '-' }}
+
+                        {{-- Kolom: Supplier --}}
+                        <td class="px-4 py-3">
+                            @if($product->supplier)
+                                <span class="text-sm text-slate-600 dark:text-slate-300 font-medium truncate block">{{ $product->supplier->nama_supplier }}</span>
+                            @else
+                                <span class="text-sm text-slate-400 dark:text-slate-500">—</span>
+                            @endif
                         </td>
 
-                        <td class="px-6 py-4">
+                        {{-- Kolom: Kategori --}}
+                        <td class="px-4 py-3">
                             @php
                                 $colors = [
                                     'Makanan' => 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800/50',
@@ -95,34 +115,50 @@
                                 ];
                                 $colorClass = $colors[$product->category] ?? 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-600';
                             @endphp
-                            <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border {{ $colorClass }}">
+                            <span class="inline-flex px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider border {{ $colorClass }}">
                                 {{ $product->category }}
                             </span>
                         </td>
 
-                        <td class="px-6 py-4 font-black text-slate-900 dark:text-white text-sm">
-                            Rp {{ number_format($product->price,0,',','.') }}
+                        {{-- Kolom: Harga --}}
+                        <td class="px-4 py-3">
+                            <div class="font-black text-slate-900 dark:text-white text-sm">
+                                Rp {{ number_format($product->price,0,',','.') }}
+                            </div>
+                            @if($product->cost_price)
+                                <div class="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5">
+                                    Modal: Rp {{ number_format($product->cost_price,0,',','.') }}
+                                </div>
+                            @endif
                         </td>
 
-                        <td class="px-6 py-4">
-                            <div class="flex flex-col gap-1.5 min-w-[120px]">
+                        {{-- Kolom: Stok --}}
+                        <td class="px-4 py-3">
+                            <div class="flex flex-col gap-1.5">
                                 <div class="flex justify-between items-end">
-                                    <span class="text-xs font-black {{ $product->stock > 10 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
-                                        {{ $product->stock }} <span class="text-[10px] font-normal text-slate-400">tersedia</span>
+                                    <span class="text-xs font-black {{ $product->stock > 10 ? 'text-emerald-600 dark:text-emerald-400' : ($product->stock > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-rose-600 dark:text-rose-400') }}">
+                                        {{ $product->stock }}
+                                        <span class="text-[10px] font-normal text-slate-400 dark:text-slate-500">tersedia</span>
                                     </span>
+                                    @if($product->stock <= 0)
+                                        <span class="text-[9px] font-bold text-rose-500 dark:text-rose-400 uppercase">Habis</span>
+                                    @elseif($product->stock <= 10)
+                                        <span class="text-[9px] font-bold text-amber-500 dark:text-amber-400 uppercase">Rendah</span>
+                                    @endif
                                 </div>
                                 <div class="w-full h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
-                                    <div class="h-full rounded-full transition-all duration-700 ease-out {{ $product->stock > 10 ? 'bg-emerald-500' : 'bg-rose-500' }}"
+                                    <div class="h-full rounded-full transition-all duration-700 ease-out {{ $product->stock > 10 ? 'bg-emerald-500' : ($product->stock > 0 ? 'bg-amber-500' : 'bg-rose-500') }}"
                                          style="width: {{ min($product->stock * 5, 100) }}%">
                                     </div>
                                 </div>
                             </div>
                         </td>
 
-                        <td class="px-6 py-4 text-right whitespace-nowrap">
-                            <div class="flex justify-end items-center gap-2">
+                        {{-- Kolom: Aksi --}}
+                        <td class="px-4 py-3">
+                            <div class="flex justify-center items-center gap-1.5">
                                 <a href="{{ route('products.edit', $product->id) }}"
-                                   class="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:text-indigo-600 hover:border-indigo-200 hover:bg-indigo-50 transition-all shadow-sm active:scale-90"
+                                   class="p-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 rounded-lg hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all shadow-sm active:scale-90"
                                    title="Edit Produk">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                 </a>
@@ -132,7 +168,7 @@
                                       onsubmit="return confirm('Hapus produk {{ $product->name }}?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="p-2.5 bg-white border border-slate-200 text-slate-600 rounded-xl hover:text-rose-600 hover:border-rose-200 hover:bg-rose-50 transition-all shadow-sm active:scale-90"
+                                    <button class="p-2 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 rounded-lg hover:text-rose-600 dark:hover:text-rose-400 hover:border-rose-200 dark:hover:border-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/30 transition-all shadow-sm active:scale-90"
                                             title="Hapus Produk">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                     </button>
@@ -144,11 +180,11 @@
                     <tr>
                         <td colspan="6" class="py-24 text-center">
                             <div class="flex flex-col items-center">
-                                <div class="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4">
+                                <div class="w-20 h-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-4 border border-slate-100 dark:border-slate-700">
                                     <svg class="w-10 h-10 text-slate-200 dark:text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
                                 </div>
                                 <h3 class="text-slate-500 dark:text-slate-400 font-bold">Produk Tidak Ditemukan</h3>
-                                <p class="text-slate-400 dark:text-slate-500 text-sm">Coba kata kunci lain atau tambah produk baru.</p>
+                                <p class="text-slate-400 dark:text-slate-500 text-sm mt-1">Coba kata kunci lain atau tambah produk baru.</p>
                             </div>
                         </td>
                     </tr>
@@ -158,7 +194,7 @@
         </div>
 
         @if($products->hasPages())
-        <div class="px-6 py-5 bg-slate-50/50 border-t border-slate-100">
+        <div class="px-4 py-4 bg-slate-50/50 dark:bg-slate-800/80 border-t border-slate-100 dark:border-slate-700">
             {{ $products->links() }}
         </div>
         @endif

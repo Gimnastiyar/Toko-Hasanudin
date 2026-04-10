@@ -20,7 +20,7 @@ public function index(Request $request)
 
     // 2. Ambil transaksi
     $transactions = Transaction::with('product')
-        ->where('status', 'completed')
+        ->whereIn('status', ['completed', 'success'])
         ->whereBetween('created_at', [$startDate, $endDate])
         ->latest()
         ->get();

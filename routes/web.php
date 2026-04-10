@@ -10,6 +10,8 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\KasirController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,11 +56,11 @@ Route::middleware('guest')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| ROUTE YANG HARUS LOGIN
+| ROUTE YANG HARUS LOGIN (ADMIN)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -77,7 +79,7 @@ Route::middleware('auth')->group(function () {
 
     /*
     |-----------------------------------------
-    | TRANSAKSI
+    | TRANSAKSI (ADMIN)
     |-----------------------------------------
     */
     Route::resource('transactions', TransactionController::class);
@@ -93,11 +95,26 @@ Route::middleware('auth')->group(function () {
 
     /*
     |-----------------------------------------
+    | PELANGGAN
+    |-----------------------------------------
+    */
+    Route::resource('customers', CustomerController::class);
+
+    /*
+    |-----------------------------------------
     | PRINT STRUK
     |-----------------------------------------
     */
     Route::get('/transactions/{transaction}/print', [TransactionController::class, 'print'])
         ->name('transactions.print');
+
+    /*
+    |-----------------------------------------
+    | UPDATE STATUS PEMBAYARAN MANUAL
+    |-----------------------------------------
+    */
+    Route::patch('/transactions/{transaction}/status', [TransactionController::class, 'updateStatus'])
+        ->name('transactions.updateStatus');
 
     /*
     |-----------------------------------------
@@ -107,11 +124,45 @@ Route::middleware('auth')->group(function () {
     Route::get('/reports', [ReportController::class, 'index'])
         ->name('reports.index');
 
-    /*
-    |-----------------------------------------
-    | LOGOUT
-    |-----------------------------------------
-    */
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE UNTUK KASIR
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->group(function () {
+
+    // Dashboard Kasir
+    Route::get('/', [KasirController::class, 'dashboard'])
+        ->name('kasir.dashboard');
+
+    // Halaman Transaksi Kasir (riwayat + form)
+    Route::get('/transaksi', [KasirController::class, 'transaksi'])
+        ->name('kasir.transaksi');
+
+    // Proses simpan transaksi (reuse TransactionController)
+    Route::post('/transaksi', [TransactionController::class, 'store'])
+        ->name('kasir.transaksi.store');
+
+    // Print struk (kasir bisa cetak struk miliknya)
+    Route::get('/transaksi/{transaction}/print', [TransactionController::class, 'print'])
+        ->name('kasir.transaksi.print');
+
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| ROUTE UMUM (AUTH TANPA ROLE KHUSUS)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth')->group(function () {
+
+    // Logout (semua role bisa logout)
     Route::post('/logout', [AuthController::class, 'logout'])
         ->name('logout');
 
@@ -126,4 +177,4 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/', function () {
     return redirect()->route('login');
-}); 
+});

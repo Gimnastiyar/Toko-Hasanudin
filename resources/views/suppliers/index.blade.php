@@ -143,7 +143,7 @@
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center justify-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-200">
+                            <div class="flex items-center justify-center gap-2">
                                 
                                 <a href="{{ route('suppliers.edit', $s->id) }}" 
                                    class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-xl transition-colors"

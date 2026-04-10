@@ -16,9 +16,9 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
-        // Jika user sudah login, langsung ke dashboard
+        // Jika user sudah login, redirect berdasarkan role
         if (Auth::check()) {
-            return redirect()->route('dashboard');
+            return $this->redirectByRole(Auth::user());
         }
 
         return view('auth.manual-login');
@@ -46,9 +46,8 @@ class AuthController extends Controller
             // Regenerate session untuk keamanan
             $request->session()->regenerate();
 
-            // Redirect ke dashboard
-            return redirect()->intended('/dashboard');
-
+            // Redirect berdasarkan role
+            return $this->redirectByRole(Auth::user());
         }
 
         // Jika login gagal
@@ -76,6 +75,23 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Helper: Redirect berdasarkan role user
+    |--------------------------------------------------------------------------
+    */
+
+    protected function redirectByRole($user)
+    {
+        if ($user->role === 'kasir') {
+            return redirect()->route('kasir.dashboard');
+        }
+
+        // Default: admin ke dashboard
+        return redirect()->route('dashboard');
     }
 
 }

@@ -17,14 +17,14 @@ class DashboardController extends Controller
         */
         $totalProducts = Product::count();
         $totalStock = Product::sum('stock');
-        $totalRevenue = Transaction::where('status', 'completed')->sum('total_price');
+        $totalRevenue = Transaction::whereIn('status', ['completed', 'success'])->sum('total_price');
 
         /*
         |--------------------------------------------------------------------------
         | 2. HITUNG PROFIT
         |--------------------------------------------------------------------------
         */
-        $transactions = Transaction::with('product')->where('status', 'completed')->get();
+        $transactions = Transaction::with('product')->whereIn('status', ['completed', 'success'])->get();
         $totalProfit = 0;
         
         foreach ($transactions as $trx) {
@@ -44,7 +44,7 @@ class DashboardController extends Controller
             DB::raw('MONTH(created_at) as month'),
             DB::raw('SUM(total_price) as total')
         )
-        ->where('status', 'completed')
+        ->whereIn('status', ['completed', 'success'])
         ->whereYear('created_at', now()->year)
         ->groupBy('month')
         ->orderBy('month')
