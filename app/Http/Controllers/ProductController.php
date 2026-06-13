@@ -18,9 +18,20 @@ class ProductController extends Controller
     | Data ditampilkan menggunakan pagination sebanyak 10 data.
     */
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with('supplier')->latest()->paginate(10);
+        $query = Product::with('supplier');
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('barcode', 'like', "%{$search}%")
+                  ->orWhere('category', 'like', "%{$search}%");
+            });
+        }
+
+        $products = $query->latest()->paginate(10)->withQueryString();
         return view('products.index', compact('products'));
     }
 
@@ -34,11 +45,11 @@ class ProductController extends Controller
     */
 
     public function create()
-{
-    $suppliers = Supplier::where('status', 'aktif')->get();
+    {
+        $suppliers = Supplier::where('status', 'aktif')->get();
 
-    return view('products.create', compact('suppliers'));
-}
+        return view('products.create', compact('suppliers'));
+    }
 
 
     /*
@@ -112,11 +123,11 @@ class ProductController extends Controller
     */
 
     public function edit(Product $product)
-{
-    $suppliers = Supplier::all();
+    {
+        $suppliers = Supplier::all();
 
-    return view('products.edit', compact('product', 'suppliers'));
-}
+        return view('products.edit', compact('product', 'suppliers'));
+    }
 
 
 

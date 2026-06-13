@@ -3,7 +3,7 @@
 @section('title', 'Laporan Keuangan')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10 antialiased font-sans text-slate-800 dark:text-slate-200">
+<div class="print:hidden max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10 antialiased font-sans text-slate-800 dark:text-slate-200">
 
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-6 print:mb-8">
         <div>
@@ -157,31 +157,33 @@
                     </thead>
                     <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
                         @forelse($transactions as $trx)
-                        @php
-                            $profit = ($trx->product->price - $trx->product->cost_price) * $trx->quantity;
-                        @endphp
-                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/50 transition-colors group">
-                            <td class="px-6 py-5 whitespace-nowrap print:px-2">
-                                <div class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ $trx->created_at->format('d M Y') }}</div>
-                                <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 print:hidden">{{ $trx->created_at->format('H:i') }} WIB</div>
-                            </td>
-                            <td class="px-6 py-5 print:px-2">
-                                <span class="text-sm font-bold text-slate-800 dark:text-white">{{ $trx->product->name }}</span>
-                            </td>
-                            <td class="px-6 py-5 text-right print:px-2">
-                                <span class="text-sm text-slate-600 dark:text-slate-400 font-mono tabular-nums">{{ number_format($trx->product->price,0,',','.') }}</span>
-                            </td>
-                            <td class="px-6 py-5 text-center print:px-2">
-                                <span class="inline-flex items-center justify-center min-w-[2.5rem] px-2 py-1 rounded-md text-sm font-bold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 print:bg-transparent print:border-none">
-                                    {{ $trx->quantity }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-5 text-right print:px-2">
-                                <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-mono tabular-nums print:text-slate-900">
-                                    +{{ number_format($profit,0,',','.') }}
-                                </span>
-                            </td>
-                        </tr>
+                            @foreach($trx->details as $detail)
+                            @php
+                                $profit = ($detail->price - ($detail->cost_price ?? 0)) * $detail->quantity;
+                            @endphp
+                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-700/50 transition-colors group">
+                                <td class="px-6 py-5 whitespace-nowrap print:px-2">
+                                    <div class="text-sm font-bold text-slate-700 dark:text-slate-300">{{ $trx->created_at->format('d M Y') }}</div>
+                                    <div class="text-xs text-slate-400 dark:text-slate-500 mt-0.5 print:hidden">{{ $trx->created_at->format('H:i') }} WIB</div>
+                                </td>
+                                <td class="px-6 py-5 print:px-2">
+                                    <span class="text-sm font-bold text-slate-800 dark:text-white">{{ $detail->product->name ?? 'Produk Dihapus' }}</span>
+                                </td>
+                                <td class="px-6 py-5 text-right print:px-2">
+                                    <span class="text-sm text-slate-600 dark:text-slate-400 font-mono tabular-nums">{{ number_format($detail->price,0,',','.') }}</span>
+                                </td>
+                                <td class="px-6 py-5 text-center print:px-2">
+                                    <span class="inline-flex items-center justify-center min-w-[2.5rem] px-2 py-1 rounded-md text-sm font-bold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600 print:bg-transparent print:border-none">
+                                        {{ $detail->quantity }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-5 text-right print:px-2">
+                                    <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 font-mono tabular-nums print:text-slate-900">
+                                        +{{ number_format($profit,0,',','.') }}
+                                    </span>
+                                </td>
+                            </tr>
+                            @endforeach
                         @empty
                         <tr>
                             <td colspan="5" class="px-6 py-20 text-center">
@@ -256,19 +258,132 @@
         </div>
     </div>
     
-    <div class="hidden print:block mt-24 pt-8 border-t border-slate-400">
-        <div class="flex justify-between items-end">
-            <div>
-                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Dokumen Internal Resmi</p>
-                <p class="text-sm font-bold text-slate-900">Dicetak pada: {{ now()->format('d F Y, H:i') }} WIB</p>
-                <p class="text-xs text-slate-500 mt-1">Sistem Informasi Manajemen Toko Hasan</p>
-            </div>
-            <div class="text-center">
-                <p class="text-sm font-bold text-slate-900 mb-16">Mengetahui, Pimpinan</p>
-                <div class="w-48 border-b border-slate-800 mb-2 mx-auto"></div>
-                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest">( ........................................ )</p>
-            </div>
-        </div>
+    </div>
+</div>
+
+<!-- ========================================== -->
+<!-- LAYER 2: FORMAL PRINT CONTAINER (A4 PORTRAIT) -->
+<!-- ========================================== -->
+<div class="hidden print:block font-serif text-black w-full" style="font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: #000000; background-color: #ffffff; width: 170mm; margin: 0 auto; font-size: 11px;">
+    <!-- HEADER LAPORAN -->
+    <div style="text-align: center; margin-bottom: 5px;">
+        <div style="width: 40px; height: 40px; border: 1.5px solid #000000; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;">TH</div>
+        <h1 style="font-size: 14px; font-weight: bold; letter-spacing: 1px; margin: 0; text-transform: uppercase;">LAPORAN KEUANGAN</h1>
+        <h2 style="font-size: 12px; font-weight: bold; margin: 3px 0 0 0; text-transform: uppercase;">SISTEM KASIR TOKO HASAN</h2>
+        <p style="font-size: 11px; margin: 5px 0 0 0; font-style: italic;">Periode: {{ $startDate->translatedFormat('d F Y') }} s.d. {{ $endDate->translatedFormat('d F Y') }}</p>
+    </div>
+
+    <div style="border-top: 1.5px solid #000000; border-bottom: 0.5px solid #000000; height: 3px; margin: 10px 0 20px 0;"></div>
+
+    <!-- RINGKASAN KEUANGAN (TABEL RINGKAS 2-KOLOM) -->
+    <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; text-align: left;">I. Ringkasan Keuangan</div>
+    <table style="width: 100mm; border-collapse: collapse; margin-bottom: 25px;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #000000; padding: 6px 10px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: left;">Keterangan</th>
+                <th style="border: 1px solid #000000; padding: 6px 10px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: right; width: 45%;">Nilai</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #000000; padding: 6px 10px; font-weight: bold;">Total Omzet</td>
+                <td style="border: 1px solid #000000; padding: 6px 10px; text-align: right; font-family: 'Courier New', Courier, monospace;">Rp {{ number_format($totalRevenue, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000000; padding: 6px 10px; font-weight: bold;">Total Modal (HPP)</td>
+                <td style="border: 1px solid #000000; padding: 6px 10px; text-align: right; font-family: 'Courier New', Courier, monospace;">Rp {{ number_format($totalCost, 0, ',', '.') }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #000000; padding: 6px 10px; font-weight: bold;">Total Diskon</td>
+                <td style="border: 1px solid #000000; padding: 6px 10px; text-align: right; font-family: 'Courier New', Courier, monospace;">Rp {{ number_format($totalDiscount, 0, ',', '.') }}</td>
+            </tr>
+            <tr style="font-weight: bold; background-color: #f9f9f9;">
+                <td style="border: 1px solid #000000; padding: 6px 10px; border-top: 1.5px solid #000000;">Laba Bersih</td>
+                <td style="border: 1px solid #000000; padding: 6px 10px; text-align: right; font-family: 'Courier New', Courier, monospace; border-top: 1.5px solid #000000;">Rp {{ number_format($netProfit, 0, ',', '.') }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- TABEL DETAIL TRANSAKSI (8 KOLOM) -->
+    <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; text-align: left;">II. Buku Rincian Transaksi Penjualan</div>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: center; width: 8mm;">No</th>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: center; width: 24mm;">Tanggal</th>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: left;">Nama Produk</th>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: right; width: 25mm;">Harga</th>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: center; width: 10mm;">Qty</th>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: right; width: 20mm;">Diskon</th>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: right; width: 25mm;">Total</th>
+                <th style="border: 1px solid #000000; padding: 6px 8px; background-color: #f2f2f2; font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: right; width: 25mm;">Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $printNo = 1; @endphp
+            @forelse($transactions as $trx)
+                @php
+                    $trxSubtotal = $trx->details->sum('subtotal');
+                    $trxDiscount = $trx->discount ?? 0;
+                    if ($trx->discount_type == 'percent') {
+                        $trxDiscountValue = ($trxDiscount / 100) * $trxSubtotal;
+                    } else {
+                        $trxDiscountValue = $trxDiscount;
+                    }
+                @endphp
+                @foreach($trx->details as $detail)
+                    @php
+                        $price = $detail->price;
+                        $qty = $detail->quantity;
+                        $detailDiscount = $trxSubtotal > 0 ? ($detail->subtotal / $trxSubtotal) * $trxDiscountValue : 0;
+                        $detailTotal = $detail->subtotal - $detailDiscount;
+                        $detailCost = ($detail->cost_price ?? 0) * $qty;
+                        $detailProfit = $detailTotal - $detailCost;
+                    @endphp
+                    <tr>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: center;">{{ $printNo++ }}</td>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: center;">{{ $trx->created_at->format('d/m/Y') }}</td>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: left;">{{ $detail->product->name ?? 'Produk Dihapus' }}</td>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: right; font-family: 'Courier New', Courier, monospace;">Rp {{ number_format($price, 0, ',', '.') }}</td>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: center;">{{ $qty }}</td>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: right; font-family: 'Courier New', Courier, monospace;">
+                            @if($detailDiscount > 0)
+                                Rp {{ number_format($detailDiscount, 0, ',', '.') }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: right; font-family: 'Courier New', Courier, monospace;">Rp {{ number_format($detailTotal, 0, ',', '.') }}</td>
+                        <td style="border: 1px solid #000000; padding: 6px 8px; text-align: right; font-family: 'Courier New', Courier, monospace; font-weight: bold;">Rp {{ number_format($detailProfit, 0, ',', '.') }}</td>
+                    </tr>
+                @endforeach
+            @empty
+                <tr>
+                    <td colspan="8" style="border: 1px solid #000000; padding: 20px; text-align: center; font-style: italic;">Tidak ada data transaksi pada periode ini.</td>
+                </tr>
+            @endforelse
+        </tbody>
+    </table>
+
+    <!-- TANDA TANGAN -->
+    <div style="float: right; width: 60mm; text-align: center; margin-top: 20px;">
+        <p style="margin: 0; font-weight: bold;">Mengetahui,</p>
+        <p style="margin: 3px 0 0 0; font-weight: bold;">Pemilik Toko Hasan</p>
+        <div style="border-bottom: 1px solid #000000; margin-top: 50px; margin-bottom: 5px; width: 45mm; margin-left: auto; margin-right: auto;"></div>
+        <p style="margin: 0; font-weight: bold;">( Hasanudin )</p>
+    </div>
+
+    <!-- FOOTER LAPORAN -->
+    <div style="clear: both; margin-top: 60px; border-top: 1px solid #000000; padding-top: 8px;">
+        <table style="border: none; width: 100%; margin-top: 10px; border-collapse: collapse;">
+            <tbody>
+                <tr style="font-size: 10px; color: #000000;">
+                    <td style="border: none; text-align: left; padding: 0; font-family: 'Times New Roman', Times, serif;">Sistem Kasir Toko Hasan</td>
+                    <td style="border: none; text-align: center; padding: 0; font-family: 'Times New Roman', Times, serif;">Halaman 1 dari 1</td>
+                    <td style="border: none; text-align: right; padding: 0; font-family: 'Times New Roman', Times, serif;">Dicetak pada: {{ now()->translatedFormat('d F Y, H:i') }} WIB</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -286,35 +401,32 @@
     }
     
     @media print {
-        @page { 
-            margin: 1cm; 
-            size: auto;
-        }
-        body { 
-            background: white !important; 
-            color: black !important;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
-        }
-        .shadow-sm, .shadow-md, .shadow-xl, .shadow-lg { box-shadow: none !important; }
-        .bg-slate-50, .bg-slate-100, .bg-slate-900, .bg-indigo-600 { background-color: transparent !important; }
-        
-        /* Pastikan teks terlihat saat diprint */
-        h1, h2, h3, p, span, td, th {
-            color: black !important;
+        header, nav, aside, footer, .no-print, [role="navigation"] {
+            display: none !important;
         }
         
-        .dark h1, .dark h2, .dark h3, .dark p, .dark span, .dark td, .dark th {
+        body, main, div, .max-w-7xl, .px-4, .py-8 {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            background: white !important;
             color: black !important;
+            box-shadow: none !important;
+            border: none !important;
         }
 
-        table, tr, td, th {
-            page-break-inside: avoid;
-            border-color: #e2e8f0 !important;
+        @page { 
+            size: A4 portrait;
+            margin: 20mm 20mm 20mm 20mm;
         }
         
-        .bg-slate-900 {
-            border: 2px solid black !important;
+        .print\:hidden {
+            display: none !important;
+        }
+        
+        .print\:block {
+            display: block !important;
         }
     }
 </style>

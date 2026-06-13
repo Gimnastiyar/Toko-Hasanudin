@@ -11,10 +11,17 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 class TransactionsExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
 
-    // Ambil data transaksi
     public function collection()
     {
-        return Transaction::with('product')->latest()->get();
+        $transactions = Transaction::with('details.product')->latest()->get();
+        $rows = collect();
+        foreach ($transactions as $trx) {
+            foreach ($trx->details as $detail) {
+                $detail->transaction = $trx;
+                $rows->push($detail);
+            }
+        }
+        return $rows;
     }
 
     // Header kolom Excel
@@ -32,15 +39,16 @@ class TransactionsExport implements FromCollection, WithHeadings, WithMapping, S
     }
 
     // Mapping data
-    public function map($trx): array
+    public function map($detail): array
     {
+        $trx = $detail->transaction;
         return [
             $trx->id,
             $trx->created_at->format('d-m-Y H:i'),
-            $trx->product->name ?? '-',
-            'Rp ' . number_format($trx->product->price ?? 0,0,',','.'),
-            $trx->quantity,
-            'Rp ' . number_format($trx->total_price,0,',','.'),
+            $detail->product->name ?? '-',
+            'Rp ' . number_format($detail->price, 0, ',', '.'),
+            $detail->quantity,
+            'Rp ' . number_format($detail->subtotal, 0, ',', '.'),
             ucfirst($trx->status),
         ];
     }

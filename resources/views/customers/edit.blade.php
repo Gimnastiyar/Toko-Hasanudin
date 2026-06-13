@@ -42,6 +42,19 @@
                     @enderror
                 </div>
 
+                <!-- Status Pelanggan -->
+                <div>
+                    <label for="status_customer" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Status Pelanggan <span class="text-rose-500">*</span></label>
+                    <select name="status_customer" id="status_customer" required
+                            class="block w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all @error('status_customer') border-rose-500 @enderror">
+                        <option value="reguler" {{ old('status_customer', $customer->status_customer) === 'reguler' ? 'selected' : '' }}>Reguler</option>
+                        <option value="langganan" {{ old('status_customer', $customer->status_customer) === 'langganan' ? 'selected' : '' }}>Langganan</option>
+                    </select>
+                    @error('status_customer')
+                        <p class="mt-2 text-xs font-bold text-rose-500">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Alamat -->
                 <div>
                     <label for="alamat" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Alamat (Opsional)</label>

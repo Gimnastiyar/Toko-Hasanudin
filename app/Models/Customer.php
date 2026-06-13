@@ -13,5 +13,11 @@ class Customer extends Model
         'nama',
         'no_hp',
         'alamat',
+        'status_customer',
     ];
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

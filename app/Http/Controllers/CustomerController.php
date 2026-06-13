@@ -38,13 +38,14 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'no_hp' => 'required|string|max:20',
+            'no_hp' => 'required|string|max:20|unique:customers,no_hp',
             'alamat' => 'nullable|string',
+            'status_customer' => 'required|in:reguler,langganan',
         ]);
 
-        Customer::create($request->all());
+        Customer::create($validated);
 
         return redirect()->route('customers.index')->with('success', 'Pelanggan berhasil ditambahkan');
     }
@@ -62,13 +63,14 @@ class CustomerController extends Controller
      */
     public function update(Request $request, Customer $customer)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'no_hp' => 'required|string|max:20',
+            'no_hp' => 'required|string|max:20|unique:customers,no_hp,' . $customer->id,
             'alamat' => 'nullable|string',
+            'status_customer' => 'required|in:reguler,langganan',
         ]);
 
-        $customer->update($request->all());
+        $customer->update($validated);
 
         return redirect()->route('customers.index')->with('success', 'Data pelanggan berhasil diupdate');
     }

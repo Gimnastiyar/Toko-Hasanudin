@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
 
             // 1. Stok Menipis
             $lowStockProducts = \App\Models\Product::where('stock', '<=', 5)->get();
-            foreach($lowStockProducts as $p) {
+            foreach ($lowStockProducts as $p) {
                 $notifications->push([
                     'type' => 'warning',
                     'title' => 'Stok Menipis',
@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
             $expiringProducts = \App\Models\Product::whereNotNull('expired_date')
                 ->where('expired_date', '<=', now()->addDays(7))
                 ->get();
-            foreach($expiringProducts as $p) {
+            foreach ($expiringProducts as $p) {
                 $diff = now()->startOfDay()->diffInDays(\Carbon\Carbon::parse($p->expired_date)->startOfDay(), false);
                 $msg = $diff < 0 ? "Telah kadaluarsa sejak " . abs($diff) . " hari lalu" : ($diff == 0 ? "Kadaluarsa hari ini!" : "Akan kadaluarsa dalam {$diff} hari");
                 $notifications->push([
@@ -52,7 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
             // 3. Hutang Supplier Mendekati Jatuh Tempo
             $suppliersWithDebt = \App\Models\Supplier::where('saldo_hutang', '>', 0)->get();
-            foreach($suppliersWithDebt as $s) {
+            foreach ($suppliersWithDebt as $s) {
                 if ($s->jatuh_tempo > 0) {
                     // updated_at + jatuh_tempo hari
                     $dueDate = $s->updated_at->copy()->addDays($s->jatuh_tempo)->startOfDay();
@@ -71,7 +71,7 @@ class AppServiceProvider extends ServiceProvider
             }
 
             // Sort notifications mostly by danger first, or keep them grouped
-            $sortedNotifications = $notifications->sortBy(function($notif) {
+            $sortedNotifications = $notifications->sortBy(function ($notif) {
                 return $notif['type'] == 'danger' ? 1 : 2;
             })->values();
 

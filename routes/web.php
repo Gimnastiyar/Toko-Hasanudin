@@ -13,11 +13,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KasirController;
 
-/*
-|--------------------------------------------------------------------------
-| API BARCODE SEARCH
-|--------------------------------------------------------------------------
-*/
+// Scan Barcode 
 
 Route::get('/api/products/search', function (Request $request) {
 
@@ -37,12 +33,6 @@ Route::get('/api/products/search', function (Request $request) {
 })->name('api.product.search');
 
 
-/*
-|--------------------------------------------------------------------------
-| ROUTE UNTUK TAMU
-|--------------------------------------------------------------------------
-*/
-
 Route::middleware('guest')->group(function () {
 
     Route::get('/login', [AuthController::class, 'showLoginForm'])
@@ -54,11 +44,7 @@ Route::middleware('guest')->group(function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| ROUTE YANG HARUS LOGIN (ADMIN)
-|--------------------------------------------------------------------------
-*/
+// ROUTE YANG HARUS LOGIN (ADMIN)
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
@@ -69,69 +55,39 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Produk
     Route::resource('products', ProductController::class);
 
-    /*
-    |-----------------------------------------
-    | EXPORT EXCEL
-    |-----------------------------------------
-    */
+    // EXPORT EXCEL
     Route::get('/transactions/export', [TransactionController::class, 'export'])
         ->name('transactions.export');
 
-    /*
-    |-----------------------------------------
-    | TRANSAKSI (ADMIN)
-    |-----------------------------------------
-    */
-    Route::resource('transactions', TransactionController::class);
+    // TRANSAKSI (ADMIN)
+    Route::resource('transactions', TransactionController::class)->only(['index']);
 
-    /*
-    |-----------------------------------------
-    | SUPPLIER
-    |-----------------------------------------
-    */
+    // SUPPLIER
     Route::resource('suppliers', SupplierController::class);
     Route::post('/suppliers/bayar', [SupplierController::class, 'bayar'])
         ->name('suppliers.bayar');
 
-    /*
-    |-----------------------------------------
-    | PELANGGAN
-    |-----------------------------------------
-    */
+    // PELANGGAN
     Route::resource('customers', CustomerController::class);
 
-    /*
-    |-----------------------------------------
-    | PRINT STRUK
-    |-----------------------------------------
-    */
+    // PRINT STRUK
     Route::get('/transactions/{transaction}/print', [TransactionController::class, 'print'])
         ->name('transactions.print');
 
-    /*
-    |-----------------------------------------
-    | UPDATE STATUS PEMBAYARAN MANUAL
-    |-----------------------------------------
-    */
+    // UPDATE STATUS PEMBAYARAN MANUAL
     Route::patch('/transactions/{transaction}/status', [TransactionController::class, 'updateStatus'])
         ->name('transactions.updateStatus');
 
-    /*
-    |-----------------------------------------
-    | LAPORAN
-    |-----------------------------------------
-    */
+    // LAPORAN
     Route::get('/reports', [ReportController::class, 'index'])
         ->name('reports.index');
+    Route::get('/reports/pdf', [ReportController::class, 'exportPdf'])
+        ->name('reports.pdf');
 
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| ROUTE UNTUK KASIR
-|--------------------------------------------------------------------------
-*/
+// ROUTE UNTUK KASIR
 
 Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->group(function () {
 
@@ -142,6 +98,10 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->group(function () {
     // Halaman Transaksi Kasir (riwayat + form)
     Route::get('/transaksi', [KasirController::class, 'transaksi'])
         ->name('kasir.transaksi');
+
+    // Pencarian customer berdasarkan no HP
+    Route::get('/customers/search', [TransactionController::class, 'searchCustomer'])
+        ->name('kasir.customers.search');
 
     // Proses simpan transaksi (reuse TransactionController)
     Route::post('/transaksi', [TransactionController::class, 'store'])
@@ -154,11 +114,7 @@ Route::middleware(['auth', 'role:kasir'])->prefix('kasir')->group(function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| ROUTE UMUM (AUTH TANPA ROLE KHUSUS)
-|--------------------------------------------------------------------------
-*/
+// ROUTE UMUM (AUTH TANPA ROLE KHUSUS)
 
 Route::middleware('auth')->group(function () {
 
@@ -169,11 +125,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-/*
-|--------------------------------------------------------------------------
-| ROOT WEBSITE
-|--------------------------------------------------------------------------
-*/
+// ROOT WEBSITE
 
 Route::get('/', function () {
     return redirect()->route('login');

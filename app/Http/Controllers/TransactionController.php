@@ -17,97 +17,128 @@ class TransactionController extends Controller
         return Excel::download(new TransactionsExport, 'laporan-transaksi.xlsx');
     }
 
-    // Tampilkan daftar transaksi (filter by role)
+    // Tampilkan daftar transaksi (Admin Monitoring)
     public function index()
     {
-        $user = auth()->user();
-
-        if ($user->role === 'kasir') {
-            // Kasir hanya melihat transaksi miliknya
-            $transactions = Transaction::with('product')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(10);
-        } else {
-            // Admin melihat semua transaksi
-            $transactions = Transaction::with('product', 'user')
-                ->latest()
-                ->paginate(10);
-        }
+        $transactions = Transaction::with(['details.product', 'user', 'customer'])
+            ->latest()
+            ->paginate(10);
 
         return view('transactions.index', compact('transactions'));
     }
 
-    // Form transaksi baru
-    public function create()
-    {
-        $products = Product::all();
 
-        return view('transactions.create', compact('products'));
+    // Pencarian customer berdasarkan no HP (untuk Kasir)
+    public function searchCustomer(Request $request)
+    {
+        $request->validate([
+            'no_hp' => 'required|string',
+        ]);
+
+        $customer = \App\Models\Customer::where('no_hp', $request->no_hp)->first();
+
+        if ($customer) {
+            return response()->json([
+                'status' => 'success',
+                'data' => [
+                    'id' => $customer->id,
+                    'nama' => $customer->nama,
+                    'status_customer' => ucfirst($customer->status_customer),
+                ]
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'not_found',
+            'message' => 'Customer belum terdaftar, silakan hubungi admin'
+        ], 404);
     }
 
     // Simpan transaksi
     public function store(Request $request)
     {
         $request->validate([
-            'product_id' => 'required',
-            'quantity' => 'required|integer|min:1',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
             'discount' => 'nullable|numeric|min:0',
-            'discount_type' => 'nullable|in:percent,nominal'
+            'discount_type' => 'nullable|in:percent,nominal',
+            'customer_id' => 'nullable|exists:customers,id'
         ]);
 
-        $product = Product::findOrFail($request->product_id);
+        try {
+            return \DB::transaction(function() use ($request) {
+                $subtotal = 0;
+                $detailsToCreate = [];
 
-        if ($request->quantity > $product->stock) {
-            return back()->with('error', 'Stok tidak mencukupi!');
+                foreach ($request->items as $item) {
+                    $product = Product::findOrFail($item['product_id']);
+                    $qty = (int)$item['quantity'];
+
+                    if ($qty > $product->stock) {
+                        throw new \Exception("Stok produk '{$product->name}' tidak mencukupi! Sisa stok: {$product->stock}");
+                    }
+
+                    // kurangi stok
+                    $product->stock -= $qty;
+                    $product->save();
+
+                    $itemSubtotal = $product->price * $qty;
+                    $subtotal += $itemSubtotal;
+
+                    $detailsToCreate[] = [
+                        'product_id' => $product->id,
+                        'quantity' => $qty,
+                        'price' => $product->price,
+                        'cost_price' => $product->cost_price,
+                        'subtotal' => $itemSubtotal,
+                    ];
+                }
+
+                $discount = $request->discount ?? 0;
+                $discountType = $request->discount_type ?? 'nominal';
+
+                if ($discountType == 'percent') {
+                    $discountValue = ($discount / 100) * $subtotal;
+                } else {
+                    $discountValue = $discount;
+                }
+
+                $total = max(0, $subtotal - $discountValue);
+
+                // Buat transaksi utama
+                $transaction = Transaction::create([
+                    'user_id' => auth()->id(),
+                    'customer_id' => $request->customer_id,
+                    'product_id' => null,
+                    'quantity' => null,
+                    'subtotal' => $subtotal,
+                    'total_price' => $total,
+                    'discount' => $discount,
+                    'discount_type' => $discountType,
+                    'status' => 'success'
+                ]);
+
+                // Buat detail transaksi
+                foreach ($detailsToCreate as $detail) {
+                    $transaction->details()->create($detail);
+                }
+
+                // Redirect berdasarkan role
+                if (auth()->user()->role === 'kasir') {
+                    return redirect()->route('kasir.transaksi')->with('success', 'Transaksi berhasil disimpan');
+                }
+
+                return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil disimpan');
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage())->withInput();
         }
-
-        $price = $product->price;
-        $qty = $request->quantity;
-
-        $subtotal = $price * $qty;
-
-        $discount = $request->discount ?? 0;
-        $discountType = $request->discount_type ?? 'nominal';
-
-        if ($discountType == 'percent') {
-            $discountValue = ($discount / 100) * $subtotal;
-        } else {
-            $discountValue = $discount;
-        }
-
-        $total = max(0, $subtotal - $discountValue);
-
-        // kurangi stok
-        $product->stock -= $qty;
-        $product->save();
-
-        Transaction::create([
-            'user_id' => auth()->id(),
-            'product_id' => $product->id,
-            'quantity' => $qty,
-            'total_price' => $total,
-            'discount' => $discount,
-            'discount_type' => $discountType,
-            'status' => 'success'
-        ]);
-
-        // Redirect berdasarkan role
-        if (auth()->user()->role === 'kasir') {
-            return redirect()->route('kasir.transaksi')->with('success', 'Transaksi berhasil disimpan');
-        }
-
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil disimpan');
     }
 
-    // Update status pembayaran secara manual
+    // Update status pembayaran secara manual (Diotorisasi via Middleware)
     public function updateStatus(Transaction $transaction, Request $request)
     {
-        // Hanya admin yang boleh update status
-        if (auth()->user()->role !== 'admin') {
-            abort(403, 'Anda tidak memiliki akses untuk mengubah status transaksi.');
-        }
-
         $request->validate([
             'status' => 'required|in:success,pending'
         ]);
@@ -122,6 +153,7 @@ class TransactionController extends Controller
     // Print struk
     public function print(Transaction $transaction)
     {
+        $transaction->load(['details.product', 'user', 'customer']);
         return view('transactions.print', compact('transaction'));
     }
 }

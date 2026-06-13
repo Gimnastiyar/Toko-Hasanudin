@@ -26,14 +26,14 @@ class DashboardController extends Controller
         */
         $transactions = Transaction::with('product')->whereIn('status', ['completed', 'success'])->get();
         $totalProfit = 0;
-        
+
         foreach ($transactions as $trx) {
             if ($trx->product) {
                 $modal = $trx->product->cost_price * $trx->quantity;
                 $omzet = $trx->total_price;
                 $totalProfit += ($omzet - $modal);
             }
-        }   
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -44,11 +44,11 @@ class DashboardController extends Controller
             DB::raw('MONTH(created_at) as month'),
             DB::raw('SUM(total_price) as total')
         )
-        ->whereIn('status', ['completed', 'success'])
-        ->whereYear('created_at', now()->year)
-        ->groupBy('month')
-        ->orderBy('month')
-        ->pluck('total', 'month');
+            ->whereIn('status', ['completed', 'success'])
+            ->whereYear('created_at', now()->year)
+            ->groupBy('month')
+            ->orderBy('month')
+            ->pluck('total', 'month');
 
         /*
         |--------------------------------------------------------------------------

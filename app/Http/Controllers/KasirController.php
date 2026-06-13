@@ -47,7 +47,7 @@ class KasirController extends Controller
         $user = auth()->user();
         $products = Product::where('stock', '>', 0)->get();
 
-        $transactions = Transaction::with('product')
+        $transactions = Transaction::with(['product', 'customer'])
             ->where('user_id', $user->id)
             ->latest()
             ->paginate(10);

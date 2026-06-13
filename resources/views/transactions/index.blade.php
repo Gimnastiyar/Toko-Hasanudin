@@ -1,209 +1,287 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-    <div class="mb-8 flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
-        <div>
-            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Riwayat Transaksi</h1>
-            <p class="text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                Pantau performa penjualan secara real-time.
-            </p>
-        </div>
-
-        <div class="flex items-center gap-3">
-            <a href="{{ route('transactions.export') }}"
-               class="inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all font-semibold text-sm">
-                <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                Export Excel
-            </a>
-
-            <a href="{{ route('transactions.create') }}"
-               class="inline-flex items-center gap-2 bg-indigo-600 text-white px-5 py-2.5 rounded-xl shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:shadow-indigo-300 transition-all font-semibold text-sm">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Transaksi Baru
-            </a>
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+        <div class="mb-8 flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
             <div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Total Transaksi</p>
-                <h2 class="text-3xl font-black text-slate-800 dark:text-white">{{ number_format($transactions->count()) }}</h2>
+                <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Riwayat Transaksi</h1>
+                <p class="text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Pantau performa penjualan secara real-time.
+                </p>
             </div>
-            <div class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 118 0m-3.359 4.64L24 20H8l2.359-4.36M16 11l4 8H4l4-8m12 0L12 3l-8 8"/></svg>
+
+            <div class="flex items-center gap-3">
+                <a href="{{ route('transactions.export') }}"
+                    class="inline-flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl shadow-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-all font-semibold text-sm">
+                    <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Export Excel
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div
+                class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Total
+                        Transaksi</p>
+                    <h2 class="text-3xl font-black text-slate-800 dark:text-white">
+                        {{ number_format($transactions->count()) }}</h2>
+                </div>
+                <div
+                    class="w-12 h-12 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 118 0m-3.359 4.64L24 20H8l2.359-4.36M16 11l4 8H4l4-8m12 0L12 3l-8 8" />
+                    </svg>
+                </div>
+            </div>
+
+            <div
+                class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Total
+                        Pendapatan</p>
+                    <h2 class="text-3xl font-black text-emerald-600 dark:text-emerald-400">Rp
+                        {{ number_format($transactions->sum('total_price'), 0, ',', '.') }}</h2>
+                </div>
+                <div
+                    class="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div
+                class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                <div>
+                    <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Produk
+                        Terjual</p>
+                    <h2 class="text-3xl font-black text-purple-600 dark:text-purple-400">
+                        {{ number_format($transactions->getCollection()->sum(function($t) { return $t->details->sum('quantity'); })) }} <span
+                            class="text-sm font-medium text-slate-400 dark:text-slate-500">Pcs</span></h2>
+                </div>
+                <div
+                    class="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                </div>
             </div>
         </div>
 
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Total Pendapatan</p>
-                <h2 class="text-3xl font-black text-emerald-600 dark:text-emerald-400">Rp {{ number_format($transactions->sum('total_price'), 0, ',', '.') }}</h2>
+        @if(session('success'))
+            <div
+                class="mb-6 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 p-4 rounded-r-xl flex items-center gap-3 animate-fade-in-down">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="font-medium">{{ session('success') }}</span>
             </div>
-            <div class="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            </div>
-        </div>
-
-        <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-700 flex items-center justify-between">
-            <div>
-                <p class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-1">Produk Terjual</p>
-                <h2 class="text-3xl font-black text-purple-600 dark:text-purple-400">{{ number_format($transactions->sum('quantity')) }} <span class="text-sm font-medium text-slate-400 dark:text-slate-500">Pcs</span></h2>
-            </div>
-            <div class="w-12 h-12 bg-purple-50 dark:bg-purple-900/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-            </div>
-        </div>
-    </div>
-
-    @if(session('success'))
-    <div class="mb-6 bg-emerald-50 border-l-4 border-emerald-500 text-emerald-700 p-4 rounded-r-xl flex items-center gap-3 animate-fade-in-down">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        <span class="font-medium">{{ session('success') }}</span>
-    </div>
-    @endif
-
-    <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <div class="overflow-x-auto text-slate-600 dark:text-slate-300">
-            <table class="w-full text-sm text-left border-collapse">
-                <thead class="bg-slate-50/50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700">
-                    <tr>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Detail Transaksi</th>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Informasi Produk</th>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Kasir</th>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest text-center">Jumlah</th>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Subtotal</th>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Status Pembayaran</th>
-                        <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest text-right">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
-                    @forelse($transactions as $trx)
-                    <tr class="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-colors group">
-                        <td class="px-6 py-4">
-                            <span class="inline-block px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-[10px] font-bold mb-1">
-                                #{{ str_pad($trx->id, 5, '0', STR_PAD_LEFT) }}
-                            </span>
-                            <p class="text-xs text-slate-400 dark:text-slate-500 font-medium">
-                                {{ $trx->created_at->format('d M Y') }} • {{ $trx->created_at->format('H:i') }}
-                            </p>
-                        </td>
-                        <td class="px-6 py-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 group-hover:bg-white dark:group-hover:bg-slate-600 transition-colors">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-                                </div>
-                                <div>
-                                    <p class="font-bold text-slate-800 dark:text-white tracking-tight">{{ $trx->product->name }}</p>
-                                    @if($trx->discount > 0)
-    <span class="inline-block mt-1 px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded text-[10px] font-bold">
-        -{{ $trx->discount_type == 'percent'
-            ? $trx->discount.'%'
-            : 'Rp '.number_format($trx->discount,0,',','.') }}
-    </span>
-@endif
-                                    <p class="text-[11px] text-slate-400 dark:text-slate-500">@ Rp {{ number_format($trx->product->price,0,',','.') }}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center gap-2">
-                                <div class="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">
-                                    {{ strtoupper(substr($trx->user->name ?? '?', 0, 1)) }}
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold text-slate-700 dark:text-slate-200">{{ $trx->user->name ?? '-' }}</p>
-                                    <p class="text-[10px] text-slate-400 uppercase">{{ $trx->user->role ?? '-' }}</p>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 text-center font-bold text-slate-700 dark:text-slate-300">
-                            {{ $trx->quantity }} <span class="text-[10px] text-slate-400 dark:text-slate-500 font-normal ml-1 whitespace-nowrap">UNIT</span>
-                        </td>
-                        <td class="px-6 py-4 font-black text-slate-900 dark:text-white">
-                            Rp {{ number_format($trx->total_price,0,',','.') }}
-                        </td>
-                        <td class="px-6 py-4">
-                            @if($trx->status == 'success' || $trx->status == 'completed')
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50 shadow-sm">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    Selesai
-                                </span>
-                            @else
-                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50 shadow-sm">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                    Pending
-                                </span>
-                            @endif
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <div class="flex items-center justify-end gap-2">
-                                {{-- Tombol Toggle Status Manual --}}
-                                <form action="{{ route('transactions.updateStatus', $trx->id) }}" method="POST" class="inline-block">
-                                    @csrf @method('PATCH')
-                                    @if($trx->status == 'success' || $trx->status == 'completed')
-                                        <input type="hidden" name="status" value="pending">
-                                        <button type="submit"
-                                                class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-amber-500 dark:text-amber-400 rounded-xl hover:text-amber-600 dark:hover:text-amber-300 hover:border-amber-200 dark:hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-all shadow-sm active:scale-90"
-                                                title="Ubah ke Pending"
-                                                onclick="return confirm('Ubah status pembayaran menjadi Pending?')">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                        </button>
-                                    @else
-                                        <input type="hidden" name="status" value="success">
-                                        <button type="submit"
-                                                class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-emerald-500 dark:text-emerald-400 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-300 hover:border-emerald-200 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-all shadow-sm active:scale-90"
-                                                title="Ubah ke Selesai"
-                                                onclick="return confirm('Ubah status pembayaran menjadi Selesai?')">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                        </button>
-                                    @endif
-                                </form>
-
-                                {{-- Tombol Print Struk --}}
-                                <a href="{{ route('transactions.print',$trx->id) }}"
-                                   target="_blank"
-                                   class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all shadow-sm active:scale-90"
-                                   title="Print Struk">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="7" class="py-20 text-center">
-                            <div class="flex flex-col items-center">
-                                <div class="w-20 h-20 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
-                                    <svg class="w-10 h-10 text-slate-200 dark:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
-                                </div>
-                                <h3 class="text-slate-500 dark:text-slate-400 font-bold">Belum Ada Transaksi</h3>
-                                <p class="text-slate-400 dark:text-slate-500 text-sm">Aktivitas penjualan akan muncul di sini.</p>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
-        @if($transactions->hasPages())
-        <div class="px-6 py-5 bg-slate-50/50 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-700">
-            {{ $transactions->links() }}
-        </div>
         @endif
+
+        <div
+            class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+            <div class="overflow-x-auto text-slate-600 dark:text-slate-300">
+                <table class="w-full text-sm text-left border-collapse">
+                    <thead class="bg-slate-50/50 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-700">
+                        <tr>
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Detail
+                                Transaksi</th>
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Informasi
+                                Produk</th>
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Kasir</th>
+                            <th
+                                class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest text-center">
+                                Jumlah</th>
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Subtotal
+                            </th>
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest">Status
+                                Pembayaran</th>
+                            <th class="px-6 py-4 font-bold text-slate-500 uppercase text-[11px] tracking-widest text-right">
+                                Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+                        @forelse($transactions as $trx)
+                            <tr class="hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 transition-colors group">
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="inline-block px-2 py-1 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 rounded text-[10px] font-bold mb-1">
+                                        #{{ str_pad($trx->id, 5, '0', STR_PAD_LEFT) }}
+                                    </span>
+                                    <p class="text-xs text-slate-400 dark:text-slate-500 font-medium">
+                                        {{ $trx->created_at->format('d M Y') }} • {{ $trx->created_at->format('H:i') }}
+                                    </p>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col gap-2">
+                                        @foreach($trx->details as $detail)
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-6 h-6 rounded bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-400 dark:text-slate-500 text-[10px] font-bold shrink-0">
+                                                    {{ substr($detail->product->name ?? '?', 0, 1) }}
+                                                </div>
+                                                <div>
+                                                    <p class="font-bold text-slate-800 dark:text-white text-xs">
+                                                        {{ $detail->product->name ?? 'Produk Dihapus' }}
+                                                        <span class="text-indigo-600 dark:text-indigo-400 font-black ml-1">x{{ $detail->quantity }}</span>
+                                                    </p>
+                                                    <p class="text-[10px] text-slate-400 dark:text-slate-500 font-mono">@ Rp {{ number_format($detail->price, 0, ',', '.') }}</p>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                        @if($trx->discount > 0)
+                                            <span class="inline-block mt-1 px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded text-[9px] font-bold self-start">
+                                                Diskon: -{{ $trx->discount_type == 'percent' ? $trx->discount . '%' : 'Rp ' . number_format($trx->discount, 0, ',', '.') }}
+                                            </span>
+                                        @endif
+                                        @if($trx->customer)
+                                            <div class="mt-1 flex items-center gap-1.5">
+                                                <span class="inline-block px-1.5 py-0.5 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 rounded text-[9px] font-bold">
+                                                    👤 {{ $trx->customer->nama }} ({{ ucfirst($trx->customer->status_customer) }})
+                                                </span>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
+                                        <div
+                                            class="w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-[10px] font-bold">
+                                            {{ strtoupper(substr($trx->user->name ?? '?', 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <p class="text-xs font-bold text-slate-700 dark:text-slate-200">
+                                                {{ $trx->user->name ?? '-' }}</p>
+                                            <p class="text-[10px] text-slate-400 uppercase">{{ $trx->user->role ?? '-' }}</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-center font-bold text-slate-700 dark:text-slate-300">
+                                    {{ $trx->details->sum('quantity') }} <span
+                                        class="text-[10px] text-slate-400 dark:text-slate-500 font-normal ml-1 whitespace-nowrap">UNIT</span>
+                                </td>
+                                <td class="px-6 py-4 font-black text-slate-900 dark:text-white">
+                                    Rp {{ number_format($trx->total_price, 0, ',', '.') }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    @if($trx->status == 'success' || $trx->status == 'completed')
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50 shadow-sm">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            Selesai
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50 shadow-sm">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                                            Pending
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        {{-- Tombol Toggle Status Manual --}}
+                                        <form action="{{ route('transactions.updateStatus', $trx->id) }}" method="POST"
+                                            class="inline-block">
+                                            @csrf @method('PATCH')
+                                            @if($trx->status == 'success' || $trx->status == 'completed')
+                                                <input type="hidden" name="status" value="pending">
+                                                <button type="submit"
+                                                    class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-amber-500 dark:text-amber-400 rounded-xl hover:text-amber-600 dark:hover:text-amber-300 hover:border-amber-200 dark:hover:border-amber-500 hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-all shadow-sm active:scale-90"
+                                                    title="Ubah ke Pending"
+                                                    onclick="return confirm('Ubah status pembayaran menjadi Pending?')">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </button>
+                                            @else
+                                                <input type="hidden" name="status" value="success">
+                                                <button type="submit"
+                                                    class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-emerald-500 dark:text-emerald-400 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-300 hover:border-emerald-200 dark:hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/30 transition-all shadow-sm active:scale-90"
+                                                    title="Ubah ke Selesai"
+                                                    onclick="return confirm('Ubah status pembayaran menjadi Selesai?')">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                </button>
+                                            @endif
+                                        </form>
+
+                                        {{-- Tombol Print Struk --}}
+                                        <a href="{{ route('transactions.print', $trx->id) }}" target="_blank"
+                                            class="inline-flex items-center justify-center w-10 h-10 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-xl hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-all shadow-sm active:scale-90"
+                                            title="Print Struk">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="py-20 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <div
+                                            class="w-20 h-20 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center mb-4">
+                                            <svg class="w-10 h-10 text-slate-200 dark:text-slate-700" fill="none"
+                                                stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-slate-500 dark:text-slate-400 font-bold">Belum Ada Transaksi</h3>
+                                        <p class="text-slate-400 dark:text-slate-500 text-sm">Aktivitas penjualan akan muncul di
+                                            sini.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            @if($transactions->hasPages())
+                <div class="px-6 py-5 bg-slate-50/50 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-700">
+                    {{ $transactions->links() }}
+                </div>
+            @endif
+        </div>
+
     </div>
 
-</div>
+    <style>
+        @keyframes fade-in-down {
+            0% {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
 
-<style>
-    @keyframes fade-in-down {
-        0% { opacity: 0; transform: translateY(-10px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in-down { animation: fade-in-down 0.4s ease-out; }
-</style>
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-down {
+            animation: fade-in-down 0.4s ease-out;
+        }
+    </style>
 @endsection

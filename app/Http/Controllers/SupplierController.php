@@ -23,11 +23,14 @@ class SupplierController extends Controller
     // Menyimpan data supplier baru ke dalam database
     public function store(Request $request)
     {
-        $request->validate([
-            'nama_supplier' => 'required',
+        $validated = $request->validate([
+            'nama_supplier' => 'required|string|max:255',
+            'no_telepon' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
+            'status' => 'nullable|in:aktif,nonaktif',
         ]);
 
-        Supplier::create($request->all());
+        Supplier::create($validated);
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier berhasil ditambahkan');
     }
@@ -41,7 +44,14 @@ class SupplierController extends Controller
     // Memperbarui data supplier di database
     public function update(Request $request, Supplier $supplier)
     {
-        $supplier->update($request->all());
+        $validated = $request->validate([
+            'nama_supplier' => 'required|string|max:255',
+            'no_telepon' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
+            'status' => 'nullable|in:aktif,nonaktif',
+        ]);
+
+        $supplier->update($validated);
 
         return redirect()->route('suppliers.index')->with('success', 'Supplier berhasil diupdate');
     }
