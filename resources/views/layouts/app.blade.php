@@ -38,15 +38,17 @@
 
         <!-- Sidebar: navigasi utama aplikasi (hidden pada mobile) -->
         <aside
-            class="w-64 bg-[#0f172a] dark:bg-slate-950 text-slate-300 hidden md:flex flex-col border-r border-slate-800 dark:border-slate-900 transition-all duration-300 shadow-2xl z-20 print:hidden">
+            class="w-64 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 hidden md:flex flex-col border-r border-slate-200 dark:border-slate-900 transition-all duration-300 shadow-xl dark:shadow-2xl z-20 print:hidden">
 
             <!-- Header sidebar: nama toko / brand -->
-            <div class="h-16 flex items-center px-6 border-b border-slate-800/60">
+            <div class="h-16 flex items-center px-6 border-b border-slate-100 dark:border-slate-800/60">
                 <div class="flex items-center gap-3">
-                    <div class="h-8 w-8 rounded-lg bg-indigo-600/20r">
-
+                    <div class="h-8 w-8 rounded-lg bg-indigo-600/10 dark:bg-indigo-600/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
                     </div>
-                    <span class="text-slate-400 font-medium text-sm tracking-wider uppercase">Hasanudin</span>
+                    <span class="text-slate-700 dark:text-slate-400 font-bold text-sm tracking-wider uppercase">Hasanudin</span>
                 </div>
             </div>
 
@@ -55,81 +57,80 @@
 
                 <!-- Menu Dashboard -->
                 <a href="{{ route('dashboard') }}"
-                    class="flex items-center px-4 py-3 bg-indigo-500/10 text-indigo-400 rounded-xl transition-all duration-200 group border border-indigo-500/20 shadow-sm">
-                    <svg class="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('dashboard') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('dashboard') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400' }}" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span class="font-medium text-sm">Dashboard</span>
+                    <span class="text-sm font-medium">Dashboard</span>
                 </a>
 
                 <!-- Menu Produk -->
                 <a href="{{ route('products.index') }}"
-                    class="flex items-center px-4 py-3 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all duration-200 group border border-transparent">
-                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-indigo-400 transition-colors" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('products.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('products.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400' }} transition-colors" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                     </svg>
-                    <span class="font-medium text-sm">Produk</span>
+                    <span class="text-sm font-medium">Produk</span>
                 </a>
 
                 <!-- Menu Transaksi -->
                 <a href="{{ route('transactions.index') }}"
-                    class="flex items-center px-4 py-3 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all duration-200 group border border-transparent">
-                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-indigo-400 transition-colors" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('transactions.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('transactions.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400' }} transition-colors" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 10h11M9 21V3m12 18H9a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2z" />
                     </svg>
-                    <span class="font-medium text-sm">Transaksi</span>
+                    <span class="text-sm font-medium">Transaksi</span>
                 </a>
 
                 <!-- Menu Pelanggan -->
                 <a href="{{ route('customers.index') }}"
-                    class="flex items-center px-4 py-3 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all duration-200 group border border-transparent">
-                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-indigo-400 transition-colors" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('customers.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('customers.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400' }} transition-colors" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
                         </path>
                     </svg>
-                    <span class="font-medium text-sm">Pelanggan</span>
+                    <span class="text-sm font-medium">Pelanggan</span>
                 </a>
 
                 <!-- Menu Supplier -->
                 <a href="{{ route('suppliers.index') }}"
-                    class="flex items-center px-4 py-3 hover:bg-slate-800/80 hover:text-white rounded-xl transition-all duration-200 group border border-transparent">
-
-                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-indigo-400 transition-colors" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('suppliers.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('suppliers.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400' }} transition-colors" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M20 13V7a2 2 0 00-2-2h-4l-2-2H6a2 2 0 00-2 2v6m16 0v6a2 2 0 01-2 2H6a2 2 0 01-2-2v-6m16 0H4">
                         </path>
                     </svg>
-
-                    <span class="font-medium text-sm">Supplier</span>
+                    <span class="text-sm font-medium">Supplier</span>
                 </a>
+
                 <!-- Menu Laporan -->
                 <a href="{{ route('reports.index') }}"
-                    class="flex items-center px-6 py-3 text-slate-300 hover:bg-slate-800 hover:text-white transition">
-                    <svg class="w-5 h-5 mr-3 text-slate-400 group-hover:text-indigo-400 transition-colors" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('reports.*') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 border-indigo-100 dark:border-indigo-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-indigo-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 {{ request()->routeIs('reports.*') ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400' }} transition-colors" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 17v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2m4-4V5a2 2 0 012-2h2a2 2 0 012 2v8m-6 0h6m6 4v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2m4-4V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v8" />
                     </svg>
-                    <span class="font-medium text-sm">Laporan</span>
+                    <span class="text-sm font-medium">Laporan</span>
                 </a>
 
             </nav>
 
             <!-- Footer sidebar: tombol logout -->
-            <div class="p-4 border-t border-slate-800/60">
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800/60">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="w-full flex items-center justify-center gap-2 bg-slate-800/40 hover:bg-red-500/10 text-slate-400 hover:text-red-400 hover:border-red-500/30 border border-transparent py-2.5 rounded-xl transition-all duration-200 group">
+                        class="w-full flex items-center justify-center gap-2 bg-slate-50 hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-100 dark:border-transparent dark:bg-slate-900/20 dark:hover:bg-red-950/20 dark:text-slate-400 dark:hover:text-red-400 py-2.5 rounded-xl transition-all duration-200 group">
                         <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

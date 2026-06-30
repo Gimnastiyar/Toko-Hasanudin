@@ -235,6 +235,17 @@
             <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
         </div>
 
+        <div class="text-xs mb-2">
+            <div class="justify-between">
+                <span>Bayar (Tunai)</span>
+                <span>Rp {{ number_format($transaction->cash_paid ?? $total, 0, ',', '.') }}</span>
+            </div>
+            <div class="justify-between">
+                <span>Kembalian</span>
+                <span>Rp {{ number_format($transaction->change_amount ?? 0, 0, ',', '.') }}</span>
+            </div>
+        </div>
+
         <!-- FOOTER -->
         <div class="text-center mt-3 text-xxs">
             <p>Terima kasih sudah berbelanja</p>

@@ -11,6 +11,8 @@ protected $fillable = [
     'product_id',
     'quantity',
     'total_price',
+    'cash_paid',
+    'change_amount',
     'subtotal',
     'discount',
     'discount_type',

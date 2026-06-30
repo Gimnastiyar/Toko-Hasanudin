@@ -38,19 +38,19 @@
 
         <!-- Sidebar Kasir (minimalis) -->
         <aside
-            class="w-64 bg-[#0f172a] dark:bg-slate-950 text-slate-300 hidden md:flex flex-col border-r border-slate-800 dark:border-slate-900 transition-all duration-300 shadow-2xl z-20 print:hidden">
+            class="w-64 bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-300 hidden md:flex flex-col border-r border-slate-200 dark:border-slate-900 transition-all duration-300 shadow-xl dark:shadow-2xl z-20 print:hidden">
 
             <!-- Header sidebar -->
-            <div class="h-16 flex items-center px-6 border-b border-slate-800/60">
+            <div class="h-16 flex items-center px-6 border-b border-slate-100 dark:border-slate-800/60">
                 <div class="flex items-center gap-3">
-                    <div class="h-8 w-8 rounded-lg bg-emerald-600/20 flex items-center justify-center">
-                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="h-8 w-8 rounded-lg bg-emerald-600/10 dark:bg-emerald-600/20 flex items-center justify-center">
+                        <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z">
                             </path>
                         </svg>
                     </div>
-                    <span class="text-slate-400 font-medium text-sm tracking-wider uppercase">Kasir Panel</span>
+                    <span class="text-slate-700 dark:text-slate-400 font-bold text-sm tracking-wider uppercase">Kasir Panel</span>
                 </div>
             </div>
 
@@ -59,45 +59,45 @@
 
                 <!-- Dashboard Kasir -->
                 <a href="{{ route('kasir.dashboard') }}"
-                    class="flex items-center px-4 py-3 {{ request()->routeIs('kasir.dashboard') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'hover:bg-slate-800/80 hover:text-white border-transparent' }} rounded-xl transition-all duration-200 group border shadow-sm">
-                    <svg class="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('kasir.dashboard') ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-emerald-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('kasir.dashboard') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400' }}" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    <span class="font-medium text-sm">Dashboard</span>
+                    <span class="text-sm font-medium">Dashboard</span>
                 </a>
 
                 <!-- Transaksi Kasir -->
                 <a href="{{ route('kasir.transaksi') }}"
-                    class="flex items-center px-4 py-3 {{ request()->routeIs('kasir.transaksi') ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'hover:bg-slate-800/80 hover:text-white border-transparent' }} rounded-xl transition-all duration-200 group border shadow-sm">
-                    <svg class="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110" fill="none"
+                    class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group border {{ request()->routeIs('kasir.transaksi') ? 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-400 border-emerald-100 dark:border-emerald-900/30 shadow-sm font-semibold' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-emerald-600 dark:hover:text-white border-transparent' }}">
+                    <svg class="w-5 h-5 mr-3 transition-transform duration-200 group-hover:scale-110 {{ request()->routeIs('kasir.transaksi') ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400' }}" fill="none"
                         stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
-                    <span class="font-medium text-sm">Transaksi</span>
+                    <span class="text-sm font-medium">Transaksi</span>
                 </a>
 
             </nav>
 
             <!-- Footer sidebar: user info + logout -->
-            <div class="p-4 border-t border-slate-800/60">
+            <div class="p-4 border-t border-slate-100 dark:border-slate-800/60">
                 <div class="flex items-center gap-3 px-3 py-2 mb-3">
                     <div
                         class="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white font-bold text-xs shadow-md">
                         {{ strtoupper(substr(auth()->user()->name ?? 'K', 0, 1)) }}
                     </div>
                     <div>
-                        <p class="text-sm font-semibold text-slate-200 leading-tight truncate max-w-[140px]">
+                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-200 leading-tight truncate max-w-[140px]">
                             {{ auth()->user()->name ?? 'Kasir' }}</p>
-                        <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wider">Kasir</p>
+                        <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium uppercase tracking-wider">Kasir</p>
                     </div>
                 </div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"
-                        class="w-full flex items-center justify-center gap-2 bg-slate-800/40 hover:bg-red-500/10 text-slate-400 hover:text-red-400 hover:border-red-500/30 border border-transparent py-2.5 rounded-xl transition-all duration-200 group">
+                        class="w-full flex items-center justify-center gap-2 bg-slate-50 hover:bg-red-50 text-slate-500 hover:text-red-600 border border-slate-100 dark:border-transparent dark:bg-slate-900/20 dark:hover:bg-red-950/20 dark:text-slate-400 dark:hover:text-red-400 py-2.5 rounded-xl transition-all duration-200 group">
                         <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

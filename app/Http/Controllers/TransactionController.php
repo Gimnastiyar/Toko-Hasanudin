@@ -18,11 +18,36 @@ class TransactionController extends Controller
     }
 
     // Tampilkan daftar transaksi (Admin Monitoring)
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = Transaction::with(['details.product', 'user', 'customer'])
-            ->latest()
-            ->paginate(10);
+        $query = Transaction::with(['details.product', 'user', 'customer']);
+
+        // Filter Pencarian (ID Transaksi, Nama Kasir, Nama Pelanggan)
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            // Clean up search query for padded ID (e.g., #00001 -> 1)
+            $cleanSearchId = ltrim(str_replace('#', '', $search), '0');
+
+            $query->where(function($q) use ($search, $cleanSearchId) {
+                $q->where('id', 'like', "%{$search}%");
+                if ($cleanSearchId !== '') {
+                    $q->orWhere('id', '=', $cleanSearchId);
+                }
+                $q->orWhereHas('user', function($uq) use ($search) {
+                       $uq->where('name', 'like', "%{$search}%");
+                   })
+                   ->orWhereHas('customer', function($cq) use ($search) {
+                       $cq->where('nama', 'like', "%{$search}%");
+                   });
+            });
+        }
+
+        // Filter Tanggal
+        if ($request->has('date') && $request->date != '') {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $transactions = $query->latest()->paginate(10)->withQueryString();
 
         return view('transactions.index', compact('transactions'));
     }
@@ -63,7 +88,8 @@ class TransactionController extends Controller
             'items.*.quantity' => 'required|integer|min:1',
             'discount' => 'nullable|numeric|min:0',
             'discount_type' => 'nullable|in:percent,nominal',
-            'customer_id' => 'nullable|exists:customers,id'
+            'customer_id' => 'nullable|exists:customers,id',
+            'cash_paid' => 'required|numeric|min:0'
         ]);
 
         try {
@@ -105,6 +131,13 @@ class TransactionController extends Controller
                 }
 
                 $total = max(0, $subtotal - $discountValue);
+                $cashPaid = (float)$request->cash_paid;
+
+                if ($cashPaid < $total) {
+                    throw new \Exception("Uang bayar tidak mencukupi! Total tagihan: Rp " . number_format($total, 0, ',', '.') . ", Uang bayar: Rp " . number_format($cashPaid, 0, ',', '.'));
+                }
+
+                $changeAmount = $cashPaid - $total;
 
                 // Buat transaksi utama
                 $transaction = Transaction::create([
@@ -114,6 +147,8 @@ class TransactionController extends Controller
                     'quantity' => null,
                     'subtotal' => $subtotal,
                     'total_price' => $total,
+                    'cash_paid' => $cashPaid,
+                    'change_amount' => $changeAmount,
                     'discount' => $discount,
                     'discount_type' => $discountType,
                     'status' => 'success'

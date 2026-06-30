@@ -18,6 +18,9 @@ class DashboardController extends Controller
         $totalProducts = Product::count();
         $totalStock = Product::sum('stock');
         $totalRevenue = Transaction::whereIn('status', ['completed', 'success'])->sum('total_price');
+        $totalSuppliers = \App\Models\Supplier::count();
+        $totalCustomers = \App\Models\Customer::count();
+        $totalTransactions = Transaction::count();
 
         /*
         |--------------------------------------------------------------------------
@@ -86,7 +89,10 @@ class DashboardController extends Controller
             'totalProfit' => $totalProfit,
             'recentTransactions' => $recentTransactions,
             'chartData' => $chartData,
-            'months' => $months
+            'months' => $months,
+            'totalSuppliers' => $totalSuppliers,
+            'totalCustomers' => $totalCustomers,
+            'totalTransactions' => $totalTransactions
         ]);
     }
 }

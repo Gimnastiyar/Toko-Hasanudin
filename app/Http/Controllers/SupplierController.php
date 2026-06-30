@@ -25,10 +25,19 @@ class SupplierController extends Controller
     {
         $validated = $request->validate([
             'nama_supplier' => 'required|string|max:255',
-            'no_telepon' => 'nullable|string|max:20',
+            'nama_perusahaan' => 'nullable|string|max:255',
+            'no_telp' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
             'alamat' => 'nullable|string',
+            'kota' => 'nullable|string|max:255',
+            'kode_pos' => 'nullable|string|max:20',
+            'saldo_hutang' => 'nullable|numeric|min:0',
+            'jatuh_tempo' => 'nullable|integer|min:0',
             'status' => 'nullable|in:aktif,nonaktif',
         ]);
+
+        $validated['saldo_hutang'] = $validated['saldo_hutang'] ?? 0;
+        $validated['jatuh_tempo'] = $validated['jatuh_tempo'] ?? 0;
 
         Supplier::create($validated);
 
@@ -46,10 +55,19 @@ class SupplierController extends Controller
     {
         $validated = $request->validate([
             'nama_supplier' => 'required|string|max:255',
-            'no_telepon' => 'nullable|string|max:20',
+            'nama_perusahaan' => 'nullable|string|max:255',
+            'no_telp' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
             'alamat' => 'nullable|string',
+            'kota' => 'nullable|string|max:255',
+            'kode_pos' => 'nullable|string|max:20',
+            'saldo_hutang' => 'nullable|numeric|min:0',
+            'jatuh_tempo' => 'nullable|integer|min:0',
             'status' => 'nullable|in:aktif,nonaktif',
         ]);
+
+        $validated['saldo_hutang'] = $validated['saldo_hutang'] ?? 0;
+        $validated['jatuh_tempo'] = $validated['jatuh_tempo'] ?? 0;
 
         $supplier->update($validated);
 

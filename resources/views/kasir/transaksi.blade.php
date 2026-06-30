@@ -175,6 +175,22 @@
                             </div>
                         </div>
 
+                        <!-- Uang Bayar & Kembalian -->
+                        <div class="bg-slate-800/50 p-3 rounded-xl border border-slate-700/50 backdrop-blur-sm mb-4">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Uang Tunai Diterima (Bayar)</label>
+                            <input type="number" id="cash_paid" name="cash_paid" placeholder="Contoh: 50000" disabled required
+                                class="w-full bg-slate-700 border border-slate-600 text-white rounded-lg px-3 py-2.5 text-sm font-mono focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 placeholder-slate-400 disabled:opacity-50 disabled:cursor-not-allowed text-right font-bold"
+                                oninput="calculateChange()">
+                            
+                            <div id="change_box" class="mt-3 hidden bg-slate-800/80 p-2.5 rounded-lg border border-slate-700/60 flex justify-between items-center">
+                                <span class="text-slate-400 text-xs font-semibold">Kembalian:</span>
+                                <span id="change_amount_display" class="text-sm font-black text-emerald-400 font-mono">Rp 0</span>
+                            </div>
+                            <div id="change_error" class="mt-3 hidden bg-rose-500/10 p-2.5 rounded-lg border border-rose-500/20 text-center text-rose-400 text-xs font-bold">
+                                Uang bayar kurang!
+                            </div>
+                        </div>
+
                         <div class="mt-auto pt-3">
                             <div class="mb-6">
                                 <div class="flex justify-between items-end mb-1">
@@ -187,7 +203,7 @@
                             </div>
 
                             <button type="submit" id="btn-submit"
-                                class="group relative w-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 py-4 rounded-xl font-black text-lg shadow-[0_0_30px_-10px_rgba(16,185,129,0.5)] transition-all duration-300 disabled:opacity-30 disabled:hover:bg-emerald-500 disabled:cursor-not-allowed disabled:shadow-none overflow-hidden"
+                                class="group relative w-full bg-emerald-500 hover:bg-emerald-400 text-slate-900 py-4 rounded-xl font-black text-lg shadow-[0_0_30px_-10px_rgba(16,185,129,0.5)] transition-all duration-300 disabled:opacity-30 disabled:hover:bg-emerald-50 disabled:cursor-not-allowed disabled:shadow-none overflow-hidden"
                                 disabled>
                                 <span class="relative z-10 flex items-center justify-center gap-2">
                                     BAYAR SEKARANG
@@ -316,6 +332,7 @@
 
 <script>
 let cart = [];
+let currentGrandTotal = 0;
 
 document.addEventListener('DOMContentLoaded', function() {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -436,6 +453,10 @@ function renderCart() {
         
         document.getElementById('discount_type').disabled = true;
         document.getElementById('discount').disabled = true;
+        document.getElementById('cash_paid').disabled = true;
+        document.getElementById('cash_paid').value = '';
+        document.getElementById('change_box').classList.add('hidden');
+        document.getElementById('change_error').classList.add('hidden');
         document.getElementById('btn-submit').disabled = true;
         
         document.getElementById('subtotal-display').innerText = 'Rp 0';
@@ -451,7 +472,7 @@ function renderCart() {
 
     document.getElementById('discount_type').disabled = false;
     document.getElementById('discount').disabled = false;
-    document.getElementById('btn-submit').disabled = false;
+    document.getElementById('cash_paid').disabled = false;
 
     let subtotal = 0;
 
@@ -542,6 +563,44 @@ function calculate(subtotalVal = null) {
         displayTotal.classList.remove('scale-105', 'text-white');
         displayTotal.classList.add('text-emerald-400');
     }, 150);
+
+    currentGrandTotal = grandTotal;
+    calculateChange();
+}
+
+function calculateChange() {
+    let cashInput = document.getElementById('cash_paid');
+    let cashPaid = parseFloat(cashInput.value) || 0;
+    let changeBox = document.getElementById('change_box');
+    let changeAmountDisplay = document.getElementById('change_amount_display');
+    let changeError = document.getElementById('change_error');
+    let submitBtn = document.getElementById('btn-submit');
+
+    if (cart.length === 0) {
+        submitBtn.disabled = true;
+        changeBox.classList.add('hidden');
+        changeError.classList.add('hidden');
+        return;
+    }
+
+    if (cashInput.value.trim() === '') {
+        submitBtn.disabled = true;
+        changeBox.classList.add('hidden');
+        changeError.classList.add('hidden');
+        return;
+    }
+
+    if (cashPaid < currentGrandTotal) {
+        submitBtn.disabled = true;
+        changeBox.classList.add('hidden');
+        changeError.classList.remove('hidden');
+    } else {
+        let change = cashPaid - currentGrandTotal;
+        changeAmountDisplay.innerText = 'Rp ' + new Intl.NumberFormat('id-ID').format(change);
+        changeBox.classList.remove('hidden');
+        changeError.classList.add('hidden');
+        submitBtn.disabled = false;
+    }
 }
 
 async function searchCustomerByPhone() {
